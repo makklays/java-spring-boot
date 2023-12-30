@@ -1,15 +1,16 @@
-package org.example.entities;
+package org.example.animals;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class Dog {
-    private String name = "Dodick";
+public class Cat {
+    private String name = "Барсик";
 
     public void setName(String name) {
         this.name = name;
     }
     public String getName() {
-        return name;
+        return this.name;
     }
 }
+

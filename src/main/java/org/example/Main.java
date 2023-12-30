@@ -1,6 +1,11 @@
 package org.example;
 
+import org.example.animals.Cat;
+import org.example.animals.Dog;
+import org.example.animals.Parrot;
 import org.example.entities.*;
+import org.example.utils.HibernateSessionFactory;
+import org.hibernate.Session;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -11,7 +16,7 @@ public class Main {
         System.out.println("Hello world!");
 
         // создаем пустой спринговый контекст, который будет искать свои бины по аннотациям в указанном пакете
-        ApplicationContext context = new AnnotationConfigApplicationContext("org.example.entities");
+        ApplicationContext context = new AnnotationConfigApplicationContext("org.example.animals"); // org.example.entities
 
         Cat cat = context.getBean(Cat.class);
         Dog dog = (Dog) context.getBean("dog");
@@ -20,6 +25,26 @@ public class Main {
         System.out.println(cat.getName());
         System.out.println(dog.getName());
         System.out.println(parrot.getName());
+
+        //--- Hibernate --------------
+        System.out.println("Hibernate tutorial");
+
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        session.beginTransaction();
+
+        //ChannelEntity channelEntity = new ChannelEntity("14", "Nick", "VK");
+        ChannelEntity channelEntity = new ChannelEntity();
+        channelEntity.setId(12);
+        channelEntity.setTitle("Nick");
+        channelEntity.setDescr("VN");
+
+        System.out.println( channelEntity.toString() );
+
+        session.save(channelEntity);
+        //session.createNativeQuery("INSERT INTO channels (id, title, descr) VALUES (1, 'Nickkk', 'Mini') ");
+        session.getTransaction().commit();
+        session.close();
+        //--- END Hibernate ----------
     }
 
     public String forStringAndInteger() {
