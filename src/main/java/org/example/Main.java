@@ -9,6 +9,8 @@ import org.hibernate.Session;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.sql.Time;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Main {
@@ -34,14 +36,36 @@ public class Main {
 
         //ChannelEntity channelEntity = new ChannelEntity("14", "Nick", "VK");
         ChannelEntity channelEntity = new ChannelEntity();
-        channelEntity.setId(12);
+        //channelEntity.setId(12);
         channelEntity.setTitle("Nick");
         channelEntity.setDescr("VN");
+        //Date date = new Date("2023-12-31");
+        //Time time = new Time(111111111);
+        //channelEntity.setDateAsTimestamp(date);
+        //channelEntity.setDateAsDate(date);
+        //channelEntity.setDateAsTime(time);
 
         System.out.println( channelEntity.toString() );
 
         session.save(channelEntity);
         //session.createNativeQuery("INSERT INTO channels (id, title, descr) VALUES (1, 'Nickkk', 'Mini') ");
+
+        // add USER
+        UserEntity userEntity = new UserEntity();
+        //channelEntity.setId(12);
+        userEntity.setLogin("Nick");
+        userEntity.setFirstname("Firstname");
+        userEntity.setLastname("Lastname");
+        userEntity.setPassword("password");
+        userEntity.setGender("man");
+        userEntity.setPhone("+380988705397");
+        userEntity.setEmail("makklays@gmail.com");
+        userEntity.setCity("City1");
+        userEntity.setIsAuth("1");
+        userEntity.setCode("1111-2222-3333-4444");
+        System.out.println( userEntity.toString() );
+        session.save(userEntity);
+
         session.getTransaction().commit();
         session.close();
         //--- END Hibernate ----------

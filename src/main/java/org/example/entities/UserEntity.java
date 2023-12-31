@@ -2,6 +2,8 @@ package org.example.entities;
 
 import org.hibernate.Session;
 import org.hibernate.mapping.List;
+
+import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.*;
 //import java.util.Date;
@@ -12,13 +14,15 @@ import javax.persistence.*;
  * Date: 2023-12-29
  */
 @Entity
-@Table(name="users", schema = "", catalog = "demo-spring-boot")
+@Table(name="`users`", schema = "", catalog = "")
 public class UserEntity {
     @Id
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
     private int id;
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
+
+    // Аннотация @Basic означает, что поле должно быть обработано автоматически: Hibernate сам решит на какую колонку и тип должно быть замаплено данное поле.
 
     @Basic
     @Column(name = "login", nullable = false, insertable = true, updatable = true, length = 60)
@@ -60,7 +64,7 @@ public class UserEntity {
     @Column(name = "email", nullable = false, insertable = true, updatable = true, length = 60)
     private String email;
     public String getEmail() { return email; }
-    public void setEmail(String email) { this.city = email; }
+    public void setEmail(String email) { this.email = email; }
 
     @Basic
     @Column(name = "city", nullable = false, insertable = true, updatable = true, length = 60)
@@ -69,10 +73,10 @@ public class UserEntity {
     public void setCity(String city) { this.city = city; }
 
     @Basic
-    @Column(name = "auth_at", nullable = false, insertable = true, updatable = true, length = 60)
-    private String auth_at;
-    public String getAuthAt() { return auth_at; }
-    public void setAuthAt(String auth_at) { this.auth_at = auth_at; }
+    @Column(name = "is_auth", nullable = false, insertable = true, updatable = true, length = 60)
+    private String isAuth;
+    public String getIsAuth() { return isAuth; }
+    public void setIsAuth(String isAuth) { this.isAuth = isAuth; }
 
     @Basic
     @Column(name = "code", nullable = true, insertable = true, updatable = true, length = 25)
@@ -80,17 +84,15 @@ public class UserEntity {
     public String getCode() { return code; }
     public void setCode(String code) { this.code = code; }
 
-    @Basic
-    @Column(name = "created_at", nullable = false, insertable = true, updatable = true, length = 20)
-    private String created_at;
-    public String getCreatedAt() { return created_at; }
-    public void setCreatedAt(String created_at) { this.created_at = created_at; }
+    @Column(name = "created_at", nullable = false, insertable = false, updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP") // columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
+    java.time.LocalDateTime createdAt;
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    /*public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }*/
 
-    @Basic
-    @Column(name = "updated_at", nullable = false, insertable = true, updatable = true, length = 20)
-    private String updated_at;
-    public String getUpdatedAt() { return updated_at; }
-    public void setUpdatedAt(String updated_at) { this.updated_at = updated_at; };
+    @Column(name = "updated_at", nullable = false, insertable = false, updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP") // columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
+    java.time.LocalDateTime updatedAt;
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    /*public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }*/
 
     @Override
     public boolean equals(Object o) {
@@ -113,10 +115,10 @@ public class UserEntity {
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (auth_at != null ? auth_at.hashCode() : 0);
+        result = 31 * result + (isAuth != null ? isAuth.hashCode() : 0);
         result = 31 * result + (code != null ? code.hashCode() : 0);
-        result = 31 * result + (created_at != null ? created_at.hashCode() : 0);
-        result = 31 * result + (updated_at != null ? updated_at.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
 
         return result;
     }
@@ -133,10 +135,10 @@ public class UserEntity {
             ", phone='" + phone + '\'' +
             ", email='" + email + '\'' +
             ", city='" + city + '\'' +
-            ", auth_at='" + auth_at + '\'' +
+            ", auth_at='" + isAuth + '\'' +
             ", code='" + code + '\'' +
-            ", created_at='" + created_at + '\'' +
-            ", updated_at=" + updated_at +
+            ", created_at='" + createdAt + '\'' +
+            ", updated_at=" + updatedAt +
         '}';
     }
 }

@@ -1,6 +1,9 @@
 package org.example.entities;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -25,6 +28,18 @@ public class ChannelEntity {
     @Column(name = "`descr`", nullable = true, insertable = true, updatable = true, length = 255)
     private String descr;
 
+    // Если аннотация отсутствует, то в базе будет тип TIMESTAMP - старый способ
+    //@Column(name = "created_at", nullable = false, insertable = false, updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    //Date dateAsTimestamp;
+
+    //@Temporal(TemporalType.DATE) // будет замаплен на тип DATE - старый способ
+    @Column(name = "created_at", nullable = false, insertable = false, updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    java.time.LocalDate createdAt;
+
+    //@Temporal(TemporalType.TIME) // будет замаплен на тип TIME - старый способ
+    @Column(name = "updated_at", nullable = false, insertable = false, updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP") // columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
+    java.time.LocalDateTime updatedAt; // java.time.LocalDateTime - новый способ
+
     /*@OneToMany(mappedBy="channels", cascade = CascadeType.ALL) // fetch = FetchType.LAZY,
     private Set<CompanyEntity> companies;
     public Set<CompanyEntity> getCompanies() { return companies; }
@@ -41,6 +56,24 @@ public class ChannelEntity {
 
     public ChannelEntity() {
     }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    // for insert datetime from annotation
+    /*public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }*/
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    // for insert and update datetime from annotation
+    /*public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }*/
 
     public int getId() {
         return id;

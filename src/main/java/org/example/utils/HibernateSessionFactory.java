@@ -8,11 +8,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.cfg.Configuration;
 
 import java.util.Properties;
+import java.util.TimeZone;
 
 public class HibernateSessionFactory {
     private static final SessionFactory sessionFactory = buildSessionFactory();
@@ -42,11 +44,16 @@ public class HibernateSessionFactory {
         settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
         settings.put(Environment.GLOBALLY_QUOTED_IDENTIFIERS, "true");
 
-        settings.put(Environment.HBM2DDL_AUTO, "create-drop");
+        //settings.put(Environment.HBM2DDL_AUTO, "create-drop");
+
+        settings.put(
+            AvailableSettings.JDBC_TIME_ZONE,
+            TimeZone.getTimeZone("UTC")
+        );
 
         configuration.setProperties(settings);
 
-        //configuration.addAnnotatedClass(UserEntity.class);
+        configuration.addAnnotatedClass(UserEntity.class);
         //configuration.addAnnotatedClass(CompanyEntity.class);
         configuration.addAnnotatedClass(ChannelEntity.class);
         //configuration.addAnnotatedClass(CreditCardEntity.class);
