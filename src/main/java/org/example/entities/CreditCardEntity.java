@@ -10,7 +10,7 @@ import java.util.Objects;
  * Date: 2023-12-29
  */
 @Entity
-@Table(name = "creditcards", schema = "", catalog = "demo-spring-boot")
+@Table(name = "creditcards", schema = "", catalog = "")
 public class CreditCardEntity {
     private int id;
     private int account;

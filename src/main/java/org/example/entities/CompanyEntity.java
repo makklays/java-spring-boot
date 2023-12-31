@@ -9,7 +9,7 @@ import java.util.Objects;
  * Date: 2023-12-29
  */
 @Entity
-@Table(name = "companies", schema = "", catalog = "demo-spring-boot")
+@Table(name = "companies", schema = "", catalog = "")
 public class CompanyEntity {
     private Long id;
     private Long channel_id;

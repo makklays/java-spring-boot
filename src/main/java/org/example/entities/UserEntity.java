@@ -23,6 +23,19 @@ public class UserEntity {
     public void setId(int id) { this.id = id; }
 
     // Аннотация @Basic означает, что поле должно быть обработано автоматически: Hibernate сам решит на какую колонку и тип должно быть замаплено данное поле.
+    // DATE - в Java, нужно использовать класс из JDK 8 DateTime API:
+    //    java.time.LocalDate
+    // TIME - из базы данных можно представить двумя типами из Java:
+    //    java.time.LocalTime
+    //    java.time.OffsetTime
+    // TIMESTAMP - в базе, в Java можно представить 4 типами:
+    //    java.time.Instant
+    //    java.time.LocalDateTime
+    //    java.time.OffsetDateTime
+    //    java.time.ZonedDateTime
+    // TIMESTAMP WITH TIME ZONE - можно представить двумя типами:
+    //    java.time.OffsetDateTime
+    //    java.time.ZonedDateTime
 
     @Basic
     @Column(name = "login", nullable = false, insertable = true, updatable = true, length = 60)
