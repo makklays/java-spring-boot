@@ -1,5 +1,8 @@
 package org.example;
 
+//import ch.qos.logback.classic.Logger;
+//import org.apache.log4j.spi.LoggerFactory;
+//import org.apache.log4j.Logger;
 import org.example.animals.Cat;
 import org.example.animals.Dog;
 import org.example.animals.Parrot;
@@ -8,12 +11,17 @@ import org.example.utils.HibernateSessionFactory;
 import org.hibernate.Session;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 import java.sql.Time;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.LogManager;
 
 public class Main {
+
+    //private static final Logger logger = Logger.getLogger(Main.class.getName());
+
     public static void main(String[] args) {
         System.out.println("Hello world!");
 
@@ -69,6 +77,16 @@ public class Main {
         session.getTransaction().commit();
         session.close();
         //--- END Hibernate ----------
+
+        // Logger slf4j
+        //Logger logger = LoggerFactory.getLogger(Main.class);
+
+        // Logger Logback
+        Logger logger = Logger.getLogger(Main.class.getName());
+        logger.info("info - hello world!");
+        logger.fine("fine - hello world!");
+        logger.log(Level.WARNING, "warning - hello world!", "Trace exception e");
+        logger.log(Level.SEVERE, "warning - hello world!", "Trace exception e");
     }
 
     public String forStringAndInteger() {

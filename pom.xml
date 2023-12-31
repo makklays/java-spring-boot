@@ -50,6 +50,25 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
+        <!-- for Logback need slf4j -->
+        <!--dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.4</version>
+            <scope>test</scope>
+        </dependency-->
+        <!-- Logger slf4j -->
+        <!--dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.30</version>
+        </dependency-->
+        <!--dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.30</version>
+        </dependency-->
+        <!-- Logger log4j -->
 
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <!-- MySQL -->
