@@ -1,4 +1,5 @@
 <!--Examples https://www.baeldung.com/logback-->
+<!--Examples https://betterstack.com/community/guides/logging/java/logback/-->
 <configuration>
   <!-- for console -->
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
