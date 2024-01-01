@@ -68,22 +68,29 @@ CREATE TABLE `companies` (
  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
  `channel_id` int(10) NOT NULL,
  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
- `count_subscribe` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
- `speed_hour_from` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
- `speed_hour_to` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
- `is_views` int(2) NOT NULL DEFAULT 0,
- `procent_off` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
- `start_from` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+ `count_views` int(11) NOT NULL,
+ `speed_hour_from` int(11) NOT NULL,
+ `speed_hour_to` int(11) NOT NULL,
+ `count_last_posts` int(11) NOT NULL DEFAULT 17,
+ `range_views_from` int(11) NOT NULL DEFAULT 0,
+ `range_views_to` int(11) NOT NULL DEFAULT 10,
+ `shift_start` int(11) NOT NULL DEFAULT 10,
+ `count_days` int(11) NOT NULL DEFAULT 1,
+ `start_from` timestamp NOT NULL,
+ `only_subscribes` int(2) NOT NULL DEFAULT 1,
+ `have_break` int(2) NOT NULL DEFAULT 0,
  `comments` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  PRIMARY KEY (`id`),
  KEY `title` (`title`),
- KEY `channel_id` (`channel_id`)
+ KEY `channel_id` (`channel_id`),
+ KEY `start_from` (`start_from`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
 
 CREATE INDEX index_channel_id ON companies(channel_id);
 CREATE INDEX index_company_title ON companies(title);
+CREATE INDEX index_company_start_from ON companies(start_from);
 
 CREATE INDEX index_channel_title ON channels(title);
 

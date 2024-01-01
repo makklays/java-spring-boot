@@ -54,7 +54,7 @@ public class HibernateSessionFactory {
         configuration.setProperties(settings);
 
         configuration.addAnnotatedClass(UserEntity.class);
-        //configuration.addAnnotatedClass(CompanyEntity.class);
+        configuration.addAnnotatedClass(CompanyEntity.class);
         configuration.addAnnotatedClass(ChannelEntity.class);
         //configuration.addAnnotatedClass(CreditCardEntity.class);
 

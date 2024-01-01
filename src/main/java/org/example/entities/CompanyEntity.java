@@ -1,6 +1,8 @@
 package org.example.entities;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -11,8 +13,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "companies", schema = "", catalog = "")
 public class CompanyEntity {
-    private Long id;
-    private Long channel_id;
+    private int id;
+    private int channel_id;
 
     /*@ManyToOne(cascade = CascadeType.ALL) // fetch = FetchType.LAZY,
     //@JoinColumn(name="channel_id")
@@ -22,33 +24,36 @@ public class CompanyEntity {
     public void setChannel(ChannelEntity channel) { this.channel = channel; }*/
 
     private String title;
-    private int count_subscribe;
+    private int count_views;
     private int speed_hour_from;
     private int speed_hour_to;
-    private int is_views;
-    private int procent_off;
-    private String start_from;
+    private int count_last_posts;
+    private int range_views_from;
+    private int range_views_to;
+    private int shift_start;
+    private int count_days;
+    private java.time.LocalDateTime start_from;
+    private int only_subscribes; // 1 or 0
+    private int have_break; // 1 or 0
     private String comments;
 
     @Id
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
-    public Long getId() {
+    public int getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    @Basic
     @Column(name = "channel_id", nullable = false, insertable = true, updatable = true)
-    public Long getChannelId() {
+    public int getChannelId() {
         return channel_id;
     }
-    public void setChannelId(Long channel_id) {
+    public void setChannelId(int channel_id) {
         this.channel_id = channel_id;
     }
 
-    @Basic
     @Column(name = "title", nullable = false, insertable = true, updatable = true, length = 60)
     public String getTitle() {
         return title;
@@ -57,16 +62,10 @@ public class CompanyEntity {
         this.title = title;
     }
 
-    @Basic
-    @Column(name = "count_subscribe", nullable = false, insertable = true, updatable = true)
-    public int getCountSubscribe() {
-        return count_subscribe;
-    }
-    public void setCountSubscribe(int count_subscribe) {
-        this.count_subscribe = count_subscribe;
-    }
+    @Column(name = "count_views", nullable = false, insertable = true, updatable = true)
+    public int getCountViews() { return count_views; }
+    public void setCountViews(int count_views) { this.count_views = count_views; }
 
-    @Basic
     @Column(name = "speed_hour_from", nullable = false, insertable = true, updatable = true)
     public int getSpeedHourFrom() {
         return speed_hour_from;
@@ -75,7 +74,6 @@ public class CompanyEntity {
         this.speed_hour_from = speed_hour_from;
     }
 
-    @Basic
     @Column(name = "speed_hour_to", nullable = false, insertable = true, updatable = true)
     public int getSpeedHourTo() {
         return speed_hour_to;
@@ -84,74 +82,66 @@ public class CompanyEntity {
         this.speed_hour_to = speed_hour_to;
     }
 
-    @Basic
-    @Column(name = "is_views", nullable = false, insertable = true, updatable = true)
-    public int getIsViews() {
-        return is_views;
-    }
-    public void setIsViews(int is_views) {
-        this.is_views = is_views;
-    }
+    @Column(name = "count_last_posts", nullable = false, insertable = true, updatable = true)
+    public int getCountLastPosts() { return count_last_posts; }
+    public void setCountLastPosts(int count_last_posts) { this.count_last_posts = count_last_posts; }
 
-    @Basic
-    @Column(name = "procent_off", nullable = false, insertable = true, updatable = true)
-    public int getProcentOff() {
-        return procent_off;
-    }
-    public void setProcentOff(int procent_off) {
-        this.procent_off = procent_off;
-    }
+    @Column(name = "range_views_from", nullable = false, insertable = true, updatable = true)
+    public int getRangeViewsFrom() { return range_views_from; }
+    public void setRangeViewsFrom(int range_views_from) { this.range_views_from = range_views_from; }
 
-    @Basic
-    @Column(name = "start_from", nullable = false, insertable = true, updatable = true, length = 25)
-    public String getStartFrom() {
-        return start_from;
-    }
-    public void setStartFrom(String start_from) {
-        this.start_from = start_from;
-    }
+    @Column(name = "range_views_to", nullable = false, insertable = true, updatable = true)
+    public int getRangeViewsTo() { return range_views_to; }
+    public void setRangeViewsTo(int range_views_to) { this.range_views_to = range_views_to; }
 
-    @Basic
+    @Column(name = "shift_start", nullable = true, insertable = true, updatable = true)
+    public int getShiftStart() { return shift_start; }
+    public void setShiftStart(int shift_start) { this.shift_start = shift_start; }
+
+    @Column(name = "count_days", nullable = true, insertable = true, updatable = true)
+    public int getCountDays() { return count_days; }
+    public void setCountDays(int count_days) { this.count_days = count_days; }
+
+    @Column(name = "start_from", nullable = false, insertable = true, updatable = true)
+    public LocalDateTime getStartFrom() { return start_from; }
+    public void setStartFrom(LocalDateTime start_from) { this.start_from = start_from; }
+
+    @Column(name = "only_subscribes", nullable = false, insertable = true, updatable = true)
+    public int getOnlySubscribes() { return only_subscribes; }
+    public void setOnlySubscribes(int only_subscribes) { this.only_subscribes = only_subscribes; }
+
+    @Column(name = "have_break", nullable = false, insertable = true, updatable = true)
+    public int getHaveBreak() { return have_break; }
+    public void setHaveBreak(int have_break) { this.have_break = have_break; }
+
     @Column(name = "comments", nullable = false, insertable = true, updatable = true, length = 500)
-    public String getComments() {
-        return comments;
+    public String getComments() { return comments; }
+    public void setComments(String comments) { this.comments = comments; }
+
+    @Column(name = "created_at", nullable = false, insertable = false, updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    java.time.LocalDate createdAt;
+    public void setCreatedAt(LocalDate createdAt) { this.createdAt = createdAt; }
+    public LocalDate getCreatedAt() {
+        return createdAt;
     }
-    public void setComments(String comments) {
-        this.comments = comments;
+
+    @Column(name = "updated_at", nullable = false, insertable = false, updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    java.time.LocalDateTime updatedAt;
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CompanyEntity that = (CompanyEntity) o;
-        if (id != that.id) return false;
-        if (channel_id != that.channel_id) return false;
-        if (!Objects.equals(title, that.title)) return false;
-        if (count_subscribe != that.count_subscribe) return false;
-        if (speed_hour_from != that.speed_hour_from) return false;
-        if (speed_hour_to != that.speed_hour_to) return false;
-        if (is_views != that.is_views) return false;
-        if (procent_off != that.procent_off) return false;
-        if (start_from != null ? !start_from.equals(that.start_from) : that.start_from != null) return false;
-        if (comments != null ? !comments.equals(that.comments) : that.comments != null) return false;
-
-        return true;
+        if (!(o instanceof CompanyEntity that)) return false;
+        return getId() == that.getId() && channel_id == that.channel_id && getCountViews() == that.getCountViews() && speed_hour_from == that.speed_hour_from && speed_hour_to == that.speed_hour_to && count_last_posts == that.count_last_posts && range_views_from == that.range_views_from && range_views_to == that.range_views_to && shift_start == that.shift_start && count_days == that.count_days && only_subscribes == that.only_subscribes && have_break == that.have_break && Objects.equals(getTitle(), that.getTitle()) && Objects.equals(start_from, that.start_from) && Objects.equals(getComments(), that.getComments());
     }
 
     @Override
     public int hashCode() {
-        int result = 0;
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (channel_id > 0 ? channel_id.hashCode() : 0);
-       // result = 31 * result + (count_subscribe > 0 ? count_subscribe.hashCode() : 0);
-       // result = 31 * result + (speed_hour_from > 0 ? speed_hour_from.hashCode() : 0);
-       // result = 31 * result + (speed_hour_to > 0 ? speed_hour_to.hashCode() : 0);
-       // result = 31 * result + (is_views > 0 ? is_views.hashCode() : 0);
-       // result = 31 * result + (procent_off > 0 ? procent_off.hashCode() : 0);
-        result = 31 * result + (start_from != null ? start_from.hashCode() : 0);
-        result = 31 * result + (comments != null ? comments.hashCode() : 0);
-        return result;
+        return Objects.hash(getId(), channel_id, getTitle(), getCountViews(), speed_hour_from, speed_hour_to, count_last_posts, range_views_from, range_views_to, shift_start, count_days, start_from, only_subscribes, have_break, getComments());
     }
 
     @Override
@@ -160,12 +150,17 @@ public class CompanyEntity {
             "id=" + id +
             ", title='" + title + '\'' +
             ", channel_id='" + channel_id +
-            ", count_subscribe='" + count_subscribe +
+            ", count_views='" + count_views +
             ", speed_hour_from='" + speed_hour_from +
             ", speed_hour_to='" + speed_hour_to +
-            ", is_views='" + is_views +
-            ", procent_off='" + procent_off +
+            ", count_last_posts='" + count_last_posts +
+            ", range_views_from='" + range_views_from +
+            ", range_views_to='" + range_views_to +
+            ", shift_start='" + shift_start +
+            ", count_days='" + count_days +
             ", start_from='" + start_from +
+            ", only_subscribes='" + only_subscribes +
+            ", have_break='" + have_break +
             ", comments='" + comments +
         '}';
     }
