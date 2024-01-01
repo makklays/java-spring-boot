@@ -3,12 +3,13 @@
   <!-- for console -->
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - [%file:%line]  %msg%n</pattern>
     </encoder>
   </appender>
 
   <!-- for file -->
   <property name="LOG_DIR" value="./logs" />
+  <!-- property name="LOG_FILE" value="myfile.log" / -->
   <appender name="FILE" class="ch.qos.logback.core.FileAppender">
       <file>${LOG_DIR}/tests.log</file>
       <append>true</append>
@@ -35,13 +36,20 @@
   </appender>
 
   <!-- Examples if you want to logging some dedicated class   -->
-  <logger name="org.controlsfx.control" level="INFO" />
+  <logger name="org.controlsfx.control" level="TRACE" />
   <logger name="org.hibernate" level="WARN" >
       <appender-ref ref="FILE_HIBERNATE" />
   </logger>
 
-  <root level="debug">
+  <root level="trace">
     <appender-ref ref="STDOUT" />
     <appender-ref ref="FILE" />
   </root>
 </configuration>
+
+<!-- error -->
+<!-- warn -->
+<!-- info -->
+<!-- debug -->
+<!-- trace -->
+

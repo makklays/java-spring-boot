@@ -14,9 +14,12 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.sql.Time;
 import java.util.Date;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.LogManager;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
+//import java.util.logging.LogManager;
+
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class Main {
 
@@ -77,14 +80,22 @@ public class Main {
         //--- END Hibernate ----------
 
         // Logger slf4j
-        //Logger logger = LoggerFactory.getLogger(Main.class);
+        System.setProperty("LOG_DIR", ".logs");
+        System.setProperty("LOG_LEVEL", "trace");
+        Logger logger = LoggerFactory.getLogger(Main.class);
+        logger.info("info - hello world!");
+        logger.trace("Entering method foo()"); // ?!
+        logger.debug("Received request from 198.12.34.56"); // ?!
+        logger.info("User logged in: john");
+        logger.warn("Connection to server lost. Retrying...");
+        logger.error("Failed to write data to file: myFile.txt");
 
         // Logger Logback
-        Logger logger = Logger.getLogger(Main.class.getName());
-        logger.info("info - hello world!");
-        logger.fine("fine - hello world!");
-        logger.log(Level.WARNING, "warning - hello world!", "Trace exception e");
-        logger.log(Level.SEVERE, "warning - hello world!", "Trace exception e");
+        //Logger logger = Logger.getLogger(Main.class.getName());
+        //logger.info("info - hello world!");
+        //logger.fine("fine - hello world!");
+        //logger.log(Level.WARNING, "warning - hello world!", "Trace exception e");
+        //logger.log(Level.SEVERE, "warning - hello world!", "Trace exception e");
     }
 
     public String forStringAndInteger() {
