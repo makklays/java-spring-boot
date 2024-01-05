@@ -1,2 +1,4 @@
-package org.example.channels;public class ChannelRepository {
+package org.example.channels;
+
+public class ChannelRepository {
 }

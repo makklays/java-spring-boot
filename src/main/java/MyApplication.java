@@ -3,8 +3,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 @RestController
 @EnableAutoConfiguration
+// @SpringBootApplication
 public class MyApplication {
 
     @RequestMapping("/")
@@ -16,6 +19,9 @@ public class MyApplication {
         SpringApplication.run(MyApplication.class, args);
     }
 }
+
+// Для запуска приложения выполняем (из корня приложения):
+// mvn spring-boot:run
 
 // @RestController - стереотипная аннотация. Данная аннотация служит подсказкой для людей, читающих код, и для Spring,
 // что класс играет определенную роль. В данном случае наш класс является @Controller для веб, поэтому Spring учитывает

@@ -1,2 +1,4 @@
-package org.example.channels;public class ChannelService {
+package org.example.channels;
+
+public class ChannelService {
 }
