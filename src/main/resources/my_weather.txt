@@ -1,0 +1,1 @@
+{"city":"chicago","name":"jon doe","age":"22","girl friend":"milka","food":"street food, jangle food","words":"привет street food ешь яблочный сидр ловлю твой ритм"}

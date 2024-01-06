@@ -1,9 +1,6 @@
 package org.example.utils;
 
-import org.example.entities.ChannelEntity;
-import org.example.entities.CompanyEntity;
-import org.example.entities.CreditCardEntity;
-import org.example.entities.UserEntity;
+import org.example.entities.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -56,6 +53,7 @@ public class HibernateSessionFactory {
         configuration.addAnnotatedClass(UserEntity.class);
         configuration.addAnnotatedClass(CompanyEntity.class);
         configuration.addAnnotatedClass(ChannelEntity.class);
+        configuration.addAnnotatedClass(CurrencyEntity.class);
         //configuration.addAnnotatedClass(CreditCardEntity.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()

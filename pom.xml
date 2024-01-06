@@ -107,6 +107,19 @@
             <version>5.3.6.Final</version>
         </dependency>
         <!--END Hibernate -->
+
+        <!-- json -->
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20230618</version>
+        </dependency>
+        <!-- end json -->
     </dependencies>
 
     <build>
