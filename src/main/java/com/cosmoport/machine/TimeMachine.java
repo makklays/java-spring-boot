@@ -1,6 +1,6 @@
 package com.cosmoport.machine;
 
-import org.example.animals.Cat;
+import org.example.domain.animals.Cat;
 
 import java.util.ArrayList;
 

@@ -1,9 +1,10 @@
-package org.example.utils;
+package org.example.config;
 
-import org.example.entities.*;
+import org.example.domain.Channel;
+import org.example.domain.Company;
+import org.example.domain.Currency;
+import org.example.domain.User;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
@@ -13,7 +14,7 @@ import org.hibernate.cfg.Configuration;
 import java.util.Properties;
 import java.util.TimeZone;
 
-public class HibernateSessionFactory {
+public class HibernateSessionFactoryConfiguration {
     private static final SessionFactory sessionFactory = buildSessionFactory();
 
     protected static SessionFactory buildSessionFactory() {
@@ -50,10 +51,10 @@ public class HibernateSessionFactory {
 
         configuration.setProperties(settings);
 
-        configuration.addAnnotatedClass(UserEntity.class);
-        configuration.addAnnotatedClass(CompanyEntity.class);
-        configuration.addAnnotatedClass(ChannelEntity.class);
-        configuration.addAnnotatedClass(CurrencyEntity.class);
+        configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(Company.class);
+        configuration.addAnnotatedClass(Channel.class);
+        configuration.addAnnotatedClass(Currency.class);
         //configuration.addAnnotatedClass(CreditCardEntity.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()

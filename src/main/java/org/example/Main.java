@@ -3,16 +3,16 @@ package org.example;
 //import ch.qos.logback.classic.Logger;
 //import org.apache.log4j.spi.LoggerFactory;
 //import org.apache.log4j.Logger;
-import org.example.animals.Cat;
-import org.example.animals.Dog;
-import org.example.animals.Parrot;
-import org.example.entities.*;
-import org.example.utils.HibernateSessionFactory;
+import org.example.domain.Channel;
+import org.example.domain.User;
+import org.example.domain.animals.Cat;
+import org.example.domain.animals.Dog;
+import org.example.domain.animals.Parrot;
+import org.example.config.HibernateSessionFactoryConfiguration;
 import org.hibernate.Session;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import java.sql.Time;
-import java.util.Date;
+
 import java.util.Scanner;
 //import java.util.logging.Level;
 //import java.util.logging.Logger;
@@ -27,7 +27,7 @@ public class Main {
         System.out.println("Hello world!");
 
         // создаем пустой спринговый контекст, который будет искать свои бины по аннотациям в указанном пакете
-        ApplicationContext context = new AnnotationConfigApplicationContext("org.example.animals"); // org.example.entities
+        ApplicationContext context = new AnnotationConfigApplicationContext("org.example.domain.animals"); // org.example.entities
 
         Cat cat = context.getBean(Cat.class);
         Dog dog = (Dog) context.getBean("dog");
@@ -40,11 +40,11 @@ public class Main {
         //--- Hibernate --------------
         System.out.println("Hibernate tutorial");
 
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        Session session = HibernateSessionFactoryConfiguration.getSessionFactory().openSession();
         session.beginTransaction();
 
         //ChannelEntity channelEntity = new ChannelEntity("14", "Nick", "VK");
-        ChannelEntity channelEntity = new ChannelEntity();
+        Channel channelEntity = new Channel();
         //channelEntity.setId(12);
         channelEntity.setTitle("Nick");
         channelEntity.setDescr("VN");
@@ -60,7 +60,7 @@ public class Main {
         //session.createNativeQuery("INSERT INTO channels (id, title, descr) VALUES (1, 'Nickkk', 'Mini') ");
 
         // add USER
-        UserEntity userEntity = new UserEntity();
+        User userEntity = new User();
         //channelEntity.setId(12);
         userEntity.setLogin("Nick");
         userEntity.setFirstname("Firstname");

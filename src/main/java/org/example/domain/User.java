@@ -1,10 +1,6 @@
-package org.example.entities;
-
-import org.hibernate.Session;
-import org.hibernate.mapping.List;
+package org.example.domain;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 import javax.persistence.*;
 //import java.util.Date;
 
@@ -15,7 +11,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="`users`", schema = "", catalog = "")
-public class UserEntity {
+public class User {
     @Id
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
     private int id;

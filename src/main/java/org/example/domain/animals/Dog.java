@@ -1,4 +1,4 @@
-package org.example.animals;
+package org.example.domain.animals;
 
 import org.springframework.stereotype.Component;
 

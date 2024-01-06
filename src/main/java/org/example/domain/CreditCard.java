@@ -1,4 +1,4 @@
-package org.example.entities;
+package org.example.domain;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "creditcards", schema = "", catalog = "")
-public class CreditCardEntity {
+public class CreditCard {
     private int id;
     private int account;
     private String bank;
@@ -107,7 +107,7 @@ public class CreditCardEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CreditCardEntity that = (CreditCardEntity) o;
+        CreditCard that = (CreditCard) o;
         if (!Objects.equals(id, that.id)) return false;
         if (account != that.account) return false;
         if (!Objects.equals(bank, that.bank)) return false;

@@ -1,13 +1,8 @@
-package org.example.entities;
+package org.example.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
-import java.util.Set;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 /**
  * Author: Alexander Kuziv
@@ -16,7 +11,7 @@ import static javax.persistence.GenerationType.IDENTITY;
  */
 @Entity
 @Table(name = "`currencies`")
-public class CurrencyEntity {
+public class Currency {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -81,7 +76,7 @@ public class CurrencyEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CurrencyEntity that)) return false;
+        if (!(o instanceof Currency that)) return false;
         return getId() == that.getId() && getR030().equals(that.getR030()) && getTxt().equals(that.getTxt()) && getRate().equals(that.getRate()) && getCc().equals(that.getCc()) && getExchangedate().equals(that.getExchangedate());
     }
 

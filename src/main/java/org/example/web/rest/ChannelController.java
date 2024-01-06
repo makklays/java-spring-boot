@@ -1,4 +1,4 @@
-package org.example.channels;
+package org.example.web.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

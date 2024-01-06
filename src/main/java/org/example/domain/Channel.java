@@ -1,12 +1,8 @@
-package org.example.entities;
+package org.example.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Set;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 /**
  * Author: Alexander Kuziv
@@ -15,7 +11,7 @@ import static javax.persistence.GenerationType.IDENTITY;
  */
 @Entity
 @Table(name = "`channels`")
-public class ChannelEntity {
+public class Channel {
     @Id
     //@GeneratedValue(strategy = IDENTITY)
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -45,16 +41,16 @@ public class ChannelEntity {
     public Set<CompanyEntity> getCompanies() { return companies; }
     public void setCompanies(Set<CompanyEntity> companies) { this.companies = companies; }*/
 
-    public ChannelEntity(String title, String descr) {
+    public Channel(String title, String descr) {
         this.title = title;
         this.descr = descr;
     }
 
-    public ChannelEntity(String title) {
+    public Channel(String title) {
         this.title = title;
     }
 
-    public ChannelEntity() {
+    public Channel() {
     }
 
     public LocalDate getCreatedAt() {
@@ -96,7 +92,7 @@ public class ChannelEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ChannelEntity that = (ChannelEntity) o;
+        Channel that = (Channel) o;
         if (id != that.id) return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
         if (descr != null ? !descr.equals(that.descr) : that.descr != null) return false;

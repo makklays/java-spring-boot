@@ -1,4 +1,4 @@
-package org.example.entities;
+package org.example.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "companies", schema = "", catalog = "")
-public class CompanyEntity {
+public class Company {
     private int id;
     private int channel_id;
 
@@ -135,7 +135,7 @@ public class CompanyEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CompanyEntity that)) return false;
+        if (!(o instanceof Company that)) return false;
         return getId() == that.getId() && channel_id == that.channel_id && getCountViews() == that.getCountViews() && speed_hour_from == that.speed_hour_from && speed_hour_to == that.speed_hour_to && count_last_posts == that.count_last_posts && range_views_from == that.range_views_from && range_views_to == that.range_views_to && shift_start == that.shift_start && count_days == that.count_days && only_subscribes == that.only_subscribes && have_break == that.have_break && Objects.equals(getTitle(), that.getTitle()) && Objects.equals(start_from, that.start_from) && Objects.equals(getComments(), that.getComments());
     }
 

@@ -1,34 +1,26 @@
-import org.apache.tomcat.util.json.JSONParser;
-import org.example.entities.ChannelEntity;
-import org.example.entities.CurrencyEntity;
-import org.example.utils.HibernateSessionFactory;
+package org.example.web.api;
+
+import org.example.config.HibernateSessionFactoryConfiguration;
+import org.example.domain.Currency;
 import org.hibernate.Session;
-import org.hibernate.type.LocalDateType;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Arrays;
-
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import javax.json.JsonValue;
-
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @RestController
-@EnableAutoConfiguration
-// @SpringBootApplication
-public class MyApplication {
-
+public class ApplicationExampleController {
     @RequestMapping("/")
     String home() {
         return "Hello World!";
@@ -138,14 +130,14 @@ public class MyApplication {
 
             //--- Hibernate --------------
             System.out.println("Hibernate tutorial");
-            Session session = HibernateSessionFactory.getSessionFactory().openSession();
+            Session session = HibernateSessionFactoryConfiguration.getSessionFactory().openSession();
             session.beginTransaction();
             /*for (Object row : buf.lines().toArray()) {
                 //for (Object item : row) {
                 System.out.println( row.toString() );
             }*/
 
-            CurrencyEntity currencyEntity = new CurrencyEntity();
+            Currency currencyEntity = new Currency();
             currencyEntity.setR030("124");
             currencyEntity.setTxt("Канадський долар");
             currencyEntity.setRate("22.3224");
@@ -175,7 +167,7 @@ public class MyApplication {
                     System.out.println("txt :" + txt);
                     System.out.println("------------------");
 
-                    CurrencyEntity cur = new CurrencyEntity();
+                    Currency cur = new Currency();
                     cur.setR030(item.get("r030").toString());
                     cur.setTxt(item.get("txt").toString());
                     cur.setRate(item.get("rate").toString());
@@ -206,25 +198,5 @@ public class MyApplication {
     String contacts() {
         return "TechMatrix18 \r\nSpain \r\nBarcelona ";
     }
-
-    public static void main(String[] args) {
-        SpringApplication.run(MyApplication.class, args);
-    }
 }
 
-// Для запуска приложения выполняем (из корня приложения):
-// mvn spring-boot:run
-
-// @RestController - стереотипная аннотация. Данная аннотация служит подсказкой для людей, читающих код, и для Spring,
-// что класс играет определенную роль. В данном случае наш класс является @Controller для веб, поэтому Spring учитывает
-// его при обработке входящих веб-запросов.
-
-// @RequestMapping - аннотация передает информацию о "маршрутизации". Она сообщает Spring, что любой HTTP-запрос
-// с путем / следует отображать на метод home
-
-// Аннотации @RestController и @RequestMapping являются аннотациями Spring MVC (они не характерны для Spring Boot).
-
-// @EnableAutoConfiguration. Эта аннотация сообщает Spring Boot, что необходимо "угадать", как нужно сконфигурировать
-// Spring, основываясь на добавленных вами jar-зависимостях. Поскольку spring-boot-starter-web добавил Tomcat и
-// Spring MVC, средство автоконфигурирования предполагает, что вы разрабатываете веб-приложение, и настраивает Spring
-// соответствующим образом.

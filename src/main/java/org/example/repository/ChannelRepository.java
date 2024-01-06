@@ -1,4 +1,4 @@
-package org.example.channels;
+package org.example.repository;
 
 public class ChannelRepository {
 }
