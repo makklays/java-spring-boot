@@ -15,7 +15,7 @@ public class ChannelController {
         return "Hello!";
     }
 
-    @Autowired
+    /*@Autowired
     private HttpClient httpClient;
 
     /*@PostMapping("/channels/add")
