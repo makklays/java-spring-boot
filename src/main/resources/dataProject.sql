@@ -1,7 +1,25 @@
+DROP TABLE IF EXISTS currencies;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS credit_cards;
 DROP TABLE IF EXISTS channels;
 DROP TABLE IF EXISTS companies;
+
+CREATE TABLE `currencies` (
+ `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+ `r030` int(25) NOT NULL,
+ `txt` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+ `rate` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+ `cc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+ `exchangedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `ip` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+ PRIMARY KEY (`id`),
+ KEY `r030` (`r030`),
+ KEY `txt` (`txt`),
+ KEY `rate` (`rate`),
+ KEY `cc` (`cc`),
+ KEY `exchangedate` (`exchangedate`),
+ KEY `ip` (`ip`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
 
 CREATE TABLE `users` (
  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -64,21 +82,6 @@ CREATE TABLE `credit_cards` (
  KEY `phone` (`phone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
 
-CREATE TABLE `currencies` (
- `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
- `r030` int(25) NOT NULL,
- `txt` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
- `rate` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
- `cc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
- `exchangedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
- PRIMARY KEY (`id`),
- KEY `r030` (`r030`),
- KEY `txt` (`txt`),
- KEY `rate` (`rate`),
- KEY `cc` (`cc`),
- KEY `exchangedate` (`exchangedate`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
-
 CREATE TABLE `companies` (
  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
  `channel_id` int(10) NOT NULL,
@@ -102,6 +105,8 @@ CREATE TABLE `companies` (
  KEY `channel_id` (`channel_id`),
  KEY `start_from` (`start_from`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+
+CREATE INDEX index_cc ON currencies(cc);
 
 CREATE INDEX index_channel_id ON companies(channel_id);
 CREATE INDEX index_company_title ON companies(title);

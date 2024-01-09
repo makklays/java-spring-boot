@@ -2,7 +2,7 @@ package org.example.config;
 
 import org.example.domain.Channel;
 import org.example.domain.Company;
-import org.example.domain.Currency;
+import org.example.domain.CurrencyEntity;
 import org.example.domain.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -54,7 +54,7 @@ public class HibernateSessionFactoryConfiguration {
         configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(Company.class);
         configuration.addAnnotatedClass(Channel.class);
-        configuration.addAnnotatedClass(Currency.class);
+        configuration.addAnnotatedClass(CurrencyEntity.class);
         //configuration.addAnnotatedClass(CreditCardEntity.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
@@ -74,5 +74,4 @@ public class HibernateSessionFactoryConfiguration {
         getSessionFactory().close();
     }
 }
-
 

@@ -1,7 +1,7 @@
 package org.example.web.api;
 
 import org.example.config.HibernateSessionFactoryConfiguration;
-import org.example.domain.Currency;
+import org.example.domain.CurrencyEntity;
 import org.hibernate.Session;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,6 +21,22 @@ import javax.json.JsonReader;
 
 @RestController
 public class ApplicationExampleController {
+    @RequestMapping("/api/v1/currencies")
+    String currencies() {
+        // todo
+
+        return "Hello Currencies !";
+    }
+
+    @RequestMapping("/api/v1/currencies/logs")
+    String currencies_logs() {
+        // todo
+
+        return "Hello Currencies Logs !";
+    }
+
+    //--- END ------------------------
+
     @RequestMapping("/")
     String home() {
         return "Hello World!";
@@ -32,9 +48,6 @@ public class ApplicationExampleController {
         // from file
         String JSON_FILE="./src/main/resources/my_weather.txt";
         InputStream fis = new FileInputStream(JSON_FILE);
-
-        // from url
-        // ?
 
         //create JsonReader object
         JsonReader jsonReader = Json.createReader(fis);
@@ -137,7 +150,7 @@ public class ApplicationExampleController {
                 System.out.println( row.toString() );
             }*/
 
-            Currency currencyEntity = new Currency();
+            CurrencyEntity currencyEntity = new CurrencyEntity();
             currencyEntity.setR030("124");
             currencyEntity.setTxt("Канадський долар");
             currencyEntity.setRate("22.3224");
@@ -167,16 +180,16 @@ public class ApplicationExampleController {
                     System.out.println("txt :" + txt);
                     System.out.println("------------------");
 
-                    Currency cur = new Currency();
+                    CurrencyEntity cur = new CurrencyEntity();
                     cur.setR030(item.get("r030").toString());
                     cur.setTxt(item.get("txt").toString());
                     cur.setRate(item.get("rate").toString());
                     cur.setCc(item.get("cc").toString());
-                    LocalDate date1 = LocalDate.of(2024, 05, 02); // item.get("exchangedate").toString()
+                    LocalDate date1 = LocalDate.of(2024, 5, 2); // item.get("exchangedate").toString()
                     cur.setExchangedate(date1);
-                    //cur.setExchangedate((LocalDate) item.get("exchangedate"));
+                    cur.setIp("127.0.0.1");
 
-                    System.out.println( cur.toString() );
+                    System.out.println(cur.toString());
                     session.save(cur);
                 }
             }
@@ -196,7 +209,13 @@ public class ApplicationExampleController {
 
     @RequestMapping("/contacts")
     String contacts() {
-        return "TechMatrix18 \r\nSpain \r\nBarcelona ";
+
+        JSONObject json = new JSONObject();
+        json.put("company", "TechMatrix18");
+        json.put("country", "Spain");
+        json.put("city", "Barcelona");
+
+        return json.toString();
     }
 }
 
