@@ -1,4 +1,5 @@
 FROM maven:jdk17
+#FROM maven:3.5-jdk-8
 #FROM openjdk:17.0.2-jdk
 
 COPY --chown=maven:maven . /app
