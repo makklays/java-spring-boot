@@ -11,7 +11,7 @@ CREATE TABLE `currencies` (
  `rate` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
  `cc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
  `exchangedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
- `ip` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+ `ip` varchar(21) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
  PRIMARY KEY (`id`),
  KEY `r030` (`r030`),
  KEY `txt` (`txt`),

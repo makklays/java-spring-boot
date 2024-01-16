@@ -4,6 +4,7 @@ import org.example.config.HibernateSessionFactoryConfiguration;
 import org.example.domain.CurrencyEntity;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -11,7 +12,11 @@ import java.util.List;
  * Class: CurrencyRepository
  * Description: General methods for Currencies (CRUD and several search)
  */
+@Component
 public class CurrencyRepository {
+
+    public CurrencyRepository() {}
+
     // insert - yo te quiero MyGirl :-)
     public boolean insertCurrency(CurrencyEntity currency) {
         try {
@@ -33,14 +38,14 @@ public class CurrencyRepository {
     }
 
     // get data by currency code
-    public List<Object> getCurrency(String currency_code) {
+    public List<CurrencyEntity> getCurrency(String currency_code) {
         try {
             System.out.println("Hibernate get records of currency by currency_code");
             Session session = HibernateSessionFactoryConfiguration.getSessionFactory().openSession();
             session.beginTransaction();
 
-            Query query = session.createQuery("FROM `currency` WHERE cc = '" + currency_code + " ");
-            List<Object> currencyList = query.list(); // or query.getResultList();
+            Query query = session.createQuery("FROM CurrencyEntity WHERE cc = '" + currency_code + "' ");
+            List<CurrencyEntity> currencyList = query.list(); // or query.getResultList();
 
             session.getTransaction().commit();
             session.close();
@@ -55,7 +60,7 @@ public class CurrencyRepository {
     }
 
     // get data by currency by period (dates)
-    public List<Object> getCurrencyByPeriod(String date_from, String date_to) {
+    public List<CurrencyEntity> getCurrencyByPeriod(String date_from, String date_to) {
         if (date_from.isEmpty()) date_from = "2024-01-08";
         if (date_to.isEmpty()) date_to = "2024-01-08";
 
@@ -64,8 +69,8 @@ public class CurrencyRepository {
             Session session = HibernateSessionFactoryConfiguration.getSessionFactory().openSession();
             session.beginTransaction();
 
-            Query query = session.createQuery("FROM `currency` WHERE exchangedate > " + date_from + " AND exchangedate < " + date_to + " ORDER BY exchangedate DESC");
-            List<Object> currencyList = query.list(); // or query.getResultList();
+            Query query = session.createQuery("FROM CurrencyEntity WHERE exchangedate > " + date_from + " AND exchangedate < " + date_to + " ORDER BY exchangedate DESC");
+            List<CurrencyEntity> currencyList = query.list(); // or query.getResultList();
 
             session.getTransaction().commit();
             session.close();

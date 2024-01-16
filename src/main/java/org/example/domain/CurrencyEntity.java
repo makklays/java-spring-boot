@@ -34,7 +34,7 @@ public class CurrencyEntity {
     @Column(name = "exchangedate", nullable = false, insertable = true, updatable = true, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP") // columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
     java.time.LocalDate exchangedate;
 
-    @Column(name = "`ip`", nullable = true, insertable = true, updatable = true, length = 10)
+    @Column(name = "`ip`", nullable = true, insertable = true, updatable = true, length = 21)
     private String ip;
 
     public int getId() { return id; }
@@ -82,7 +82,7 @@ public class CurrencyEntity {
         return ip;
     }
     public void setIp(String ip) {
-        this.rate = ip;
+        this.ip = ip;
     }
 
     @Override

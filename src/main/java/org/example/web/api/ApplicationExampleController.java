@@ -2,44 +2,104 @@ package org.example.web.api;
 
 import org.example.config.HibernateSessionFactoryConfiguration;
 import org.example.domain.CurrencyEntity;
+import org.example.repository.CurrencyRepository;
+import org.example.services.CurrencyService;
 import org.hibernate.Session;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.sql.Date;
 import java.time.LocalDate;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
 @RestController
+@RequestMapping("/api/v1/currencies")
 public class ApplicationExampleController {
-    @RequestMapping("/api/v1/currencies")
-    String currencies() {
-        // todo
+    private final CurrencyService service;
+    private final CurrencyRepository repository;
 
-        return "Hello Currencies !";
+    private static final Logger log = LoggerFactory.getLogger(ApplicationExampleController.class);
+
+    public ApplicationExampleController(CurrencyRepository repository, CurrencyService service) {
+        this.repository = repository;
+        this.service = service;
     }
 
-    @RequestMapping("/api/v1/currencies/logs")
-    String currencies_logs() {
-        // todo
+    // at browser: http://127.0.0.1:8080/api/v1/currencies
+    @GetMapping(path = "/{code_currency:[A-Z]+}", produces = "application/json")
+    @ResponseBody
+    public List<CurrencyEntity> getCurrency(@PathVariable String code_currency) {
 
-        return "Hello Currencies Logs !";
+        CurrencyEntity curr = new CurrencyEntity();
+        curr.setTxt("Американский доллар");
+        curr.setR030("123");
+        curr.setCc("USD");
+        curr.setRate("12.12");
+        LocalDate date1 = LocalDate.of(2024, 1, 8);
+        curr.setExchangedate(date1);
+        curr.setIp("111.22.1");
+
+        log.info(curr.toString());
+
+        boolean resInsert = repository.insertCurrency(curr);
+
+        // get data by code_currency from database, use beans or services
+        List<CurrencyEntity> result = repository.getCurrency(code_currency);
+
+        // log
+        System.out.println("Currency code: " + code_currency);
+        log.info("IIIIIIIIIIIIIIINFO!!! Currency code: " + code_currency + " Size: " + result.size());
+
+        return result;
+    }
+
+    @GetMapping(path = "/logs/{start_date}/{end_date}", produces = "application/json")
+    @ResponseBody
+    public List<CurrencyEntity> getCurrenciesLogsByPeriod(@PathVariable String start_date, @PathVariable String end_date) {
+        // get data by code_currency from database, use beans or services
+        List<CurrencyEntity> res = repository.getCurrencyByPeriod(start_date, end_date);
+
+        // log
+        System.out.println("Start date: " + start_date + " End date:" + end_date);
+        log.info("IIIIIIIIIIIIIIINFO!!! Start date: " + start_date + " End date:" + end_date + " Size: " + res.size());
+
+        return res;
     }
 
     //--- END ------------------------
 
+    //--- Other URLs examples --------
+
     @RequestMapping("/")
     String home() {
         return "Hello World!";
+    }
+
+    // at browser: http://127.0.0.1:8080/api/v1/currencies/add
+    @RequestMapping("/api/v1/currencies")
+    @PostMapping(path = "/add", consumes = "application/json")
+    public void addCurrency(@RequestBody CurrencyEntity currency) {
+        // ...
+    }
+
+    // at browser: http://127.0.0.1:8080/api/v1/currencies/add
+    @GetMapping(path = "/api/v1/my-example-currencies/{id}", produces = "application/json")
+    @ResponseBody
+    public CurrencyEntity getCurr(@PathVariable String curr) {
+        // ...
+        return null;
     }
 
     @RequestMapping("/api/v1/get-weather")
