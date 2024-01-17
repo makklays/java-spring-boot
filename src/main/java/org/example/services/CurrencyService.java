@@ -23,15 +23,15 @@ public class CurrencyService {
 
     // get records of currency by period
     public List<CurrencyEntity> getCurrencyByPeriod(String date_from, String date_to) {
-        if (date_from.isEmpty()) date_from = "2024-01-08";
-        if (date_to.isEmpty()) date_to = "2024-01-08";
+        if (date_from.isEmpty()) date_from = "2024-01-01";
+        if (date_to.isEmpty()) date_to = "2024-12-31";
 
         try {
             System.out.println("Hibernate get records of currency by period");
             Session session = HibernateSessionFactoryConfiguration.getSessionFactory().openSession();
             session.beginTransaction();
 
-            Query query = session.createQuery("FROM CurrencyEntity WHERE exchangedate > " + date_from + " AND exchangedate < " + date_to + " ORDER BY exchangedate DESC");
+            Query query = session.createQuery("FROM CurrencyEntity WHERE exchangedate BETWEEN '" + date_from + "' AND '" + date_to + "'  ORDER BY exchangedate DESC");
             List<CurrencyEntity> currencyList = query.list(); // or query.getResultList();
 
             session.getTransaction().commit();
@@ -74,7 +74,9 @@ public class CurrencyService {
             }
 
             JSONArray j = new JSONArray(b.toString());
+
             //System.out.println("Length: " + j.length() + " List: " + j.toList());
+
             for (int i=0; i < j.length(); i++) {
 
                 JSONObject item = (JSONObject) j.get(i);

@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.sql.Date;
 import java.time.LocalDate;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -38,6 +38,7 @@ public class ApplicationExampleController {
     }
 
     // at browser: http://127.0.0.1:8080/api/v1/currencies
+
     @GetMapping(path = "/{code_currency:[A-Z]+}", produces = "application/json")
     @ResponseBody
     public List<CurrencyEntity> getCurrency(@PathVariable String code_currency) {
@@ -80,6 +81,78 @@ public class ApplicationExampleController {
         log.info("IIIIIIIIIIIIIIINFO!!! Start date: " + start_date + " End date:" + end_date + " Size: " + res.size());
 
         return res;
+    }
+
+    @PostMapping(consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String insertCurrency(@RequestBody CurrencyEntity currency) {
+
+        boolean res = repository.insertCurrency(currency);
+
+        JSONObject json = new JSONObject();
+        if (res) {
+            json.put("result", "success");
+            json.put("message", "All right!");
+        } else {
+            json.put("result", "error");
+            json.put("message", "All not right!");
+        }
+
+        return json.toString();
+    }
+
+    @DeleteMapping(consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String deleteCurrency(@RequestBody CurrencyEntity currency) {
+
+        boolean res = repository.deleteCurrency(currency);
+
+        JSONObject json = new JSONObject();
+        if (res) {
+            json.put("result", "success");
+            json.put("message", "All right!");
+        } else {
+            json.put("result", "error");
+            json.put("message", "All not right!");
+        }
+
+        return json.toString();
+    }
+
+    @PutMapping(consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String putCurrency(@RequestBody CurrencyEntity currency) {
+
+        boolean res = repository.updateCurrency(currency);
+
+        JSONObject json = new JSONObject();
+        if (res) {
+            json.put("result", "success");
+            json.put("message", "All right!");
+        } else {
+            json.put("result", "error");
+            json.put("message", "All not right!");
+        }
+
+        return json.toString();
+    }
+
+    @PatchMapping(consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String patchCurrency(@RequestBody CurrencyEntity currency) {
+
+        boolean res = repository.updateCurrency(currency);
+
+        JSONObject json = new JSONObject();
+        if (res) {
+            json.put("result", "success");
+            json.put("message", "All right!");
+        } else {
+            json.put("result", "error");
+            json.put("message", "All not right!");
+        }
+
+        return json.toString();
     }
 
     //--- END ------------------------
