@@ -61,15 +61,15 @@ public class CurrencyRepository {
 
     // get data by currency by period (dates)
     public List<CurrencyEntity> getCurrencyByPeriod(String date_from, String date_to) {
-        if (date_from.isEmpty()) date_from = "2024-01-08";
-        if (date_to.isEmpty()) date_to = "2024-01-08";
+        if (date_from.isEmpty()) date_from = "2024-01-01";
+        if (date_to.isEmpty()) date_to = "2024-12-31";
 
         try {
             System.out.println("Hibernate get records of currency by period");
             Session session = HibernateSessionFactoryConfiguration.getSessionFactory().openSession();
             session.beginTransaction();
 
-            Query query = session.createQuery("FROM CurrencyEntity WHERE exchangedate > " + date_from + " AND exchangedate < " + date_to + " ORDER BY exchangedate DESC");
+            Query query = session.createQuery("FROM CurrencyEntity  WHERE exchangedate BETWEEN '" + date_from + "' AND '" + date_to + "'  ORDER BY exchangedate DESC");
             List<CurrencyEntity> currencyList = query.list(); // or query.getResultList();
 
             session.getTransaction().commit();

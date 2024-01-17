@@ -25,7 +25,7 @@ public class CurrencyEntity {
     @Column(name = "`txt`", nullable = false, insertable = true, updatable = true, length = 255)
     private String txt;
 
-    @Column(name = "`rate`", nullable = false, insertable = true, updatable = true, length = 100)
+    @Column(name = "`rate`", nullable = true, insertable = true, updatable = true, length = 255)
     private String rate;
 
     @Column(name = "`cc`", nullable = false, insertable = true, updatable = true, length = 10)

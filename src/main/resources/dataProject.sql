@@ -8,7 +8,7 @@ CREATE TABLE `currencies` (
  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
  `r030` int(25) NOT NULL,
  `txt` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
- `rate` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+ `rate` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
  `cc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
  `exchangedate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `ip` varchar(21) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,

@@ -42,7 +42,8 @@ public class ApplicationExampleController {
     @ResponseBody
     public List<CurrencyEntity> getCurrency(@PathVariable String code_currency) {
 
-        CurrencyEntity curr = new CurrencyEntity();
+        // simple insert
+        /*CurrencyEntity curr = new CurrencyEntity();
         curr.setTxt("Американский доллар");
         curr.setR030("123");
         curr.setCc("USD");
@@ -53,9 +54,12 @@ public class ApplicationExampleController {
 
         log.info(curr.toString());
 
-        boolean resInsert = repository.insertCurrency(curr);
+        boolean resInsert = repository.insertCurrency(curr); */
 
-        // get data by code_currency from database, use beans or services
+        // get currency from National Bank and insert into table `currencies`
+        boolean resBank = service.getCurrencyFromNationalBank(code_currency);
+
+        // get List of data by code_currency from database, use beans or services
         List<CurrencyEntity> result = repository.getCurrency(code_currency);
 
         // log
