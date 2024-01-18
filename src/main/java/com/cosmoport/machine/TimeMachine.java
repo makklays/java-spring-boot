@@ -37,7 +37,7 @@ public class TimeMachine {
         System.out.println("Какой сейчас год?");
         System.out.println(timeMachine.getYear());
 
-        timeMachine.goToPast();
+        /*timeMachine.goToPast();
         System.out.println("А сейчас?");
         System.out.println(timeMachine.getYear());
 
@@ -77,7 +77,7 @@ public class TimeMachine {
         System.out.println(s12 == s21.intern()); // true
 
         // arrays
-        byYears1();
+        byYears1();*/
     }
 
     public void byYears() {
@@ -173,5 +173,61 @@ public class TimeMachine {
         System.out.println(Arrays.binarySearch(array, 0)); //а теперь попробуем найти число, которого в массиве нет,
         // и сразу же выведем результат на экран
     }
+
+    // example: Collection
+    public static void funcLinkedList() {
+
+        // Iterator -> Collection -> List       -       Set (уникальны)      -       Queue       -        Map
+        //                            |                  |                             |                   |
+        //                  ArrayList - LinkedList    Iterator                   PriorityQueue
+
+        ArrayList<Integer> arr = new ArrayList<Integer>(10);
+
+        arr.add(0, 1);
+        arr.add(1, 2);
+        arr.add(2, 3);
+        arr.add(3, 4);
+
+        System.out.println(Arrays.toString(arr.toArray()));
+
+        for (int i = 0; i < 10; i++) {
+            // LinkedListElement<Integer> element = new LinkedListElement<Integer>();
+            // element.data = i;
+
+            arr.add(i, i);
+        }
+
+        System.out.println(Arrays.toString(arr.toArray()));
+        System.out.println(arr.indexOf(0));
+        System.out.println(arr.size());
+        System.out.println(arr.remove(1));
+        System.out.println(arr.remove(2));
+        System.out.println(Arrays.toString(arr.toArray()));
+        System.out.println(arr.size());
+
+        System.out.println(arr.contains(8));
+
+        //Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        //System.out.println(gson.toJson(someObject));
+
+        //
+        LinkedList<Integer> linked = new LinkedList<Integer>();
+
+        linked.add(0,0);
+        linked.add(1,2);
+        System.out.println(Arrays.toString(linked.toArray()));
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
 

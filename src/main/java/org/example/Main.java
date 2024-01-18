@@ -3,6 +3,7 @@ package org.example;
 //import ch.qos.logback.classic.Logger;
 //import org.apache.log4j.spi.LoggerFactory;
 //import org.apache.log4j.Logger;
+import com.cosmoport.machine.TimeMachine;
 import org.example.domain.Channel;
 import org.example.domain.User;
 import org.example.domain.animals.Cat;
@@ -24,6 +25,13 @@ import org.slf4j.Logger;
 public class Main {
 
     public static void main(String[] args) {
+        //
+
+
+        TimeMachine.funcLinkedList();
+
+
+        /*
         System.out.println("Hello world!");
 
         // создаем пустой спринговый контекст, который будет искать свои бины по аннотациям в указанном пакете
@@ -96,6 +104,7 @@ public class Main {
         //logger.fine("fine - hello world!");
         //logger.log(Level.WARNING, "warning - hello world!", "Trace exception e");
         //logger.log(Level.SEVERE, "warning - hello world!", "Trace exception e");
+        */
     }
 
     public String forStringAndInteger() {
