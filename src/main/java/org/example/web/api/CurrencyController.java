@@ -1,8 +1,6 @@
 package org.example.web.api;
 
-import static org.springframework.web.servlet.function.ServerResponse.ok;
-
-import org.example.domain.CurrencyEntity;
+import org.example.domain.Currency;
 import org.example.repository.CurrencyRepository;
 import org.example.services.CurrencyService;
 import org.example.web.client.NationalBankClient;
@@ -15,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
@@ -24,12 +21,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+
 
 @RestController
 @RequestMapping("/api/v1/currencies")
@@ -54,43 +56,54 @@ public class CurrencyController {
 
     @GetMapping(path = "/{code_currency:[A-Z]+}", produces = "application/json")
     public ResponseEntity<Response> getCurrency(@PathVariable String code_currency ) {
-         // get currency from National Bank and insert into table `currencies`
-        CurrencyEntity resBank = nationalBankClient.getCurrencyFromNationalBank(code_currency);
+        // currently date
+        Date by_date = new Date();
+        SimpleDateFormat sdateFormat = new SimpleDateFormat("yyyyMMdd");
+        String format_date = sdateFormat.format(by_date);
+
+        // get currency from National Bank and insert into table `currencies`
+        Currency resBank = nationalBankClient.getCurrencyFromNationalBank(code_currency, format_date);
         // get List of data by code_currency from database, use beans or services
         //List<CurrencyEntity> result = repository.getCurrency(code_currency);
+
+        // now
+        java.time.LocalDateTime currentDateTime = java.time.LocalDateTime.now();
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //LocalDateTime dateTime = dateFormat.format(currentDateTime);
+
+        resBank.setCreatedAt(currentDateTime);
+        System.out.println("==== datetime ==> " + currentDateTime);
+
+        // insert to table
+        boolean res = repository.insertCurrency(resBank);
+        if (res) {
+            log.info("Inserted successfully");
+        } else {
+            log.info("Not inserted successfully");
+        }
 
         return ResponseEntity.ok().body(new Response("success", "200", resBank));
     }
 
-//    @GetMapping(path = "/logs/{start_date}/{end_date}", produces = "application/json")
-//    @ResponseBody
-//    public List<CurrencyEntity> getCurrenciesLogsByPeriod(@PathVariable String start_date, @PathVariable String end_date) {
-//        // get data by code_currency from database, use beans or services
-//        List<CurrencyEntity> res = repository.getCurrencyByPeriod(start_date, end_date);
-//
-//        // log
-//        System.out.println("Start date: " + start_date + " End date:" + end_date);
-//        log.info("IIIIIIIIIIIIIIINFO!!! Start date: " + start_date + " End date:" + end_date + " Size: " + res.size());
-//
-//        return res;
-//    }
+    @GetMapping(path = "/logs/{start_date}/{end_date}", produces = "application/json")
+    @ResponseBody
+    public List<Currency> getCurrenciesLogsByPeriod(@PathVariable String start_date, @PathVariable String end_date) {
+        // get data by code_currency from database, use beans or services
+        List<Currency> res = repository.getCurrencyByPeriod(start_date, end_date);
+
+        // log
+        log.info("IIIIIIIIIIIIIIINFO!!! Start date: " + start_date + " End date:" + end_date + " Size: " + res.size());
+
+        return res;
+    }
 
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public String insertCurrency(@RequestBody CurrencyEntity currency) {
+    public ResponseEntity<Response> insertCurrency(@RequestBody Currency currency) {
 
         boolean res = repository.insertCurrency(currency);
 
-        JSONObject json = new JSONObject();
-        if (res) {
-            json.put("result", "success");
-            json.put("message", "All right!");
-        } else {
-            json.put("result", "error");
-            json.put("message", "All not right!");
-        }
-
-        return json.toString();
+        return ResponseEntity.ok().body(new Response("success", "200", currency));
     }
 
 //    @DeleteMapping(consumes = "application/json")
@@ -159,14 +172,14 @@ public class CurrencyController {
     // at browser: http://127.0.0.1:8080/api/v1/currencies/add
     @RequestMapping("/api/v1/currencies")
     @PostMapping(path = "/add", consumes = "application/json")
-    public void addCurrency(@RequestBody CurrencyEntity currency) {
+    public void addCurrency(@RequestBody Currency currency) {
         // ...
     }
 
     // at browser: http://127.0.0.1:8080/api/v1/currencies/add
     @GetMapping(path = "/api/v1/my-example-currencies/{id}", produces = "application/json")
     @ResponseBody
-    public CurrencyEntity getCurr(@PathVariable String curr) {
+    public Currency getCurr(@PathVariable String curr) {
         // ...
         return null;
     }
@@ -279,7 +292,7 @@ public class CurrencyController {
                 System.out.println( row.toString() );
             }*/
 
-            CurrencyEntity currencyEntity = new CurrencyEntity();
+            Currency currencyEntity = new Currency();
             currencyEntity.setR030("124");
             currencyEntity.setTxt("Канадський долар");
             currencyEntity.setRate("22.3224");
@@ -287,7 +300,7 @@ public class CurrencyController {
             LocalDate date = LocalDate.of(2024, 05, 02);
             currencyEntity.setExchangedate(date);
             System.out.println( currencyEntity.toString() );
-            session.save(currencyEntity);
+            session.persist(currencyEntity);
 
             StringBuilder b = new StringBuilder();
             while ((line = buf.readLine()) != null) {
@@ -309,7 +322,7 @@ public class CurrencyController {
                     System.out.println("txt :" + txt);
                     System.out.println("------------------");
 
-                    CurrencyEntity cur = new CurrencyEntity();
+                    Currency cur = new Currency();
                     cur.setR030(item.get("r030").toString());
                     cur.setTxt(item.get("txt").toString());
                     cur.setRate(item.get("rate").toString());
@@ -319,7 +332,7 @@ public class CurrencyController {
                     cur.setIp("127.0.0.1");
 
                     System.out.println(cur.toString());
-                    session.save(cur);
+                    session.persist(cur);
                 }
             }
 

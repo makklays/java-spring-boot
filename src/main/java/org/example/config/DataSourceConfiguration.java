@@ -17,8 +17,8 @@ public class DataSourceConfiguration {
     static {
         config.setJdbcUrl( "jdbc:mysql://localhost:3306/currency_rest" );
         config.setDriverClassName( "com.mysql.jdbc.Driver");
-        config.setUsername( "root" );
-        config.setPassword( "root" );
+        config.setUsername( "admin" ); // "root"
+        config.setPassword( "admin" ); // "root"
         config.addDataSourceProperty( "cachePrepStmts" , "true" );
         config.addDataSourceProperty( "prepStmtCacheSize" , "250" );
         config.addDataSourceProperty( "prepStmtCacheSqlLimit" , "2048" );

@@ -2,7 +2,9 @@ package org.example.domain;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
+import java.sql.Timestamp;
 
 /**
  * Class: CurrencyEntity
@@ -14,7 +16,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "`currencies`")
-public class CurrencyEntity {
+public class Currency {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
@@ -37,6 +39,10 @@ public class CurrencyEntity {
 
     @Column(name = "`ip`", nullable = true, insertable = true, updatable = true, length = 21)
     private String ip;
+
+    @Column(name = "created_at", nullable = false, insertable = true, updatable = true, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    java.time.LocalDateTime createdAt;
+
 
     public int getId() { return id; }
     public void setId(int id) {
@@ -86,28 +92,34 @@ public class CurrencyEntity {
         this.ip = ip;
     }
 
+    public void setCreatedAt(java.time.LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public java.time.LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CurrencyEntity that)) return false;
-        return getId() == that.getId() && getR030().equals(that.getR030()) && getTxt().equals(that.getTxt()) && getRate().equals(that.getRate()) && getCc().equals(that.getCc()) && getExchangedate().equals(that.getExchangedate()) && getIp().equals(that.getIp());
+        if (!(o instanceof Currency that)) return false;
+        return getId() == that.getId() && getR030().equals(that.getR030()) && getTxt().equals(that.getTxt()) && getRate().equals(that.getRate()) && getCc().equals(that.getCc()) && getExchangedate().equals(that.getExchangedate()) && getIp().equals(that.getIp()) && getCreatedAt().equals(that.getCreatedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getR030(), getTxt(), getRate(), getCc(), getExchangedate(), getIp());
+        return Objects.hash(getId(), getR030(), getTxt(), getRate(), getCc(), getExchangedate(), getIp(), getCreatedAt());
     }
 
     @Override
     public String toString() {
-        return "CurrencyEntity {" +
+        return "Currency {" +
                 "id=" + id +
                 ", r030='" + r030 + "'" +
                 ", txt='" + txt + "'" +
                 ", rate='" + rate + "'" +
                 ", cc='" + cc + "'" +
-                ", exchangedate='" + exchangedate +
-                ", ip='" + ip +
+                ", exchangedate='" + exchangedate + "'" +
+                ", ip='" + ip + "'" +
+                ", created_at='" + createdAt +
                 "'}";
     }
 }

@@ -1,25 +1,22 @@
 package org.example.domain.animals;
 
-import org.example.repository.CurrencyRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.example.domain.CurrencyEntity;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Class: Currency
  * Description: This bean have several functions for currency.
  */
 @Component
-public class Currency {
+public class CurrencyBean {
     private String currency_code = "USD";
 
     public void setCurrencyCode(String currency_code) {
@@ -39,7 +36,7 @@ public class Currency {
         }
 
         // log
-        Logger logger = LoggerFactory.getLogger(Currency.class);
+        Logger logger = LoggerFactory.getLogger(CurrencyBean.class);
 
         // 1. connect and get data from National Bank
         System.setProperty("http.agent", "Mozilla/5.0");
@@ -67,7 +64,7 @@ public class Currency {
                 JSONObject item = (JSONObject) json_result.get(i);
 
                 if (item.has("r030")) {
-                    CurrencyEntity cur = new CurrencyEntity();
+                    org.example.domain.Currency cur = new org.example.domain.Currency();
                     cur.setR030(item.get("r030").toString());
                     cur.setTxt(item.get("txt").toString());
                     cur.setRate(item.get("rate").toString());
@@ -93,7 +90,7 @@ public class Currency {
                 }
             }
         } catch (Exception e) {
-            logger.info("Exception! Bean " + Currency.class + ". Exception message: " + e.getMessage());
+            logger.info("Exception! Bean " + CurrencyBean.class + ". Exception message: " + e.getMessage());
         }
 
         // 3. return data as json

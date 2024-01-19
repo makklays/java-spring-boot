@@ -3,20 +3,16 @@ package org.example.config;
 import com.zaxxer.hikari.HikariDataSource;
 import org.example.domain.Channel;
 import org.example.domain.Company;
-import org.example.domain.CurrencyEntity;
+import org.example.domain.Currency;
 import org.example.domain.User;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 
 import java.util.Properties;
 import java.util.TimeZone;
@@ -61,7 +57,7 @@ public class HibernateSessionFactoryConfiguration {
         configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(Company.class);
         configuration.addAnnotatedClass(Channel.class);
-        configuration.addAnnotatedClass(CurrencyEntity.class);
+        configuration.addAnnotatedClass(Currency.class);
         //configuration.addAnnotatedClass(CreditCardEntity.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()

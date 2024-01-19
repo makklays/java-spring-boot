@@ -1,6 +1,6 @@
 package org.example.repository;
 
-import org.example.domain.CurrencyEntity;
+import org.example.domain.Currency;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public class CurrencyRepository {
 
 
     // insert - yo te quiero MyGirl :-)
-    public boolean insertCurrency(CurrencyEntity currency) {
+    public boolean insertCurrency(Currency currency) {
 
         try {
             Session session = sessionFactory.openSession();
@@ -44,13 +44,13 @@ public class CurrencyRepository {
     }
 
     // get data by currency code
-    public List<CurrencyEntity> getCurrency(String currencyCode) {
+    public List<Currency> getCurrency(String currencyCode) {
         try {
             Session session = sessionFactory.openSession();
            log.info("Hibernate get records of currency by currency_code{}", currencyCode);
 
-            List<CurrencyEntity> currencyList = session
-                    .createQuery("FROM CurrencyEntity WHERE cc = '" + currencyCode + "' ", CurrencyEntity.class)
+            List<Currency> currencyList = session
+                    .createQuery("FROM Currency WHERE cc = '" + currencyCode + "' ", Currency.class)
                     .getResultList();
             sessionFactory.close();
 
@@ -61,70 +61,63 @@ public class CurrencyRepository {
         }
         return Collections.emptyList();
     }
-//
-//    // get data by currency by period (dates)
-//    public List<CurrencyEntity> getCurrencyByPeriod(String date_from, String date_to) {
-//        if (date_from.isEmpty()) date_from = "2024-01-01";
-//        if (date_to.isEmpty()) date_to = "2024-12-31";
-//
-//        try {
-//            System.out.println("Hibernate get records of currency by period");
-//            Session session = HibernateSessionFactoryConfiguration.getSessionFactory().openSession();
-//            session.beginTransaction();
-//
-//            Query query = session.createQuery("FROM CurrencyEntity  WHERE exchangedate BETWEEN '" + date_from + "' AND '" + date_to + "'  ORDER BY exchangedate DESC");
-//            List<CurrencyEntity> currencyList = query.list(); // or query.getResultList();
-//
-//            session.getTransaction().commit();
-//            session.close();
-//
-//            return currencyList;
-//
-//        } catch (Exception e) {
-//            System.out.println("Exception! Error message: " + e.getMessage());
-//        }
-//
-//        return null;
-//    }
-//
-//    // update
-//    public boolean updateCurrency(CurrencyEntity currency) {
-//        try {
-//            System.out.println("Hibernate update record of currency");
-//            Session session = HibernateSessionFactoryConfiguration.getSessionFactory().openSession();
-//            session.beginTransaction();
-//
-//            session.update(currency);
-//
-//            session.getTransaction().commit();
-//            session.close();
-//
-//            return true;
-//        } catch (Exception e) {
-//            System.out.println("Exception! Error message: " + e.getMessage());
-//        }
-//
-//        return false;
-//    }
-//
-//    // delete
-//    public boolean deleteCurrency(CurrencyEntity currency) {
-//        try {
-//            System.out.println("Hibernate delete record of currency");
-//            Session session = HibernateSessionFactoryConfiguration.getSessionFactory().openSession();
-//            session.beginTransaction();
-//
-//            session.delete(currency);
-//
-//            session.getTransaction().commit();
-//            session.close();
-//
-//            return true;
-//        } catch (Exception e) {
-//            System.out.println("Exception! Error message: " + e.getMessage());
-//        }
-//
-//        return false;
-//    }
+
+    // get data by currency by period (dates)
+    public List<Currency> getCurrencyByPeriod(String date_from, String date_to) {
+        if (date_from.isEmpty()) date_from = "2024-01-01";
+        if (date_to.isEmpty()) date_to = "2024-12-31";
+
+        try {
+            Session session = sessionFactory.openSession();
+            log.info("Hibernate get records of currency by date_from{} and date_to{}", date_from, date_to);
+
+            List<Currency> currencyList = session
+                    .createQuery("FROM Currency  WHERE created_at BETWEEN '" + date_from + "' AND '" + date_to + "'  ORDER BY created_at DESC", Currency.class)
+                    .getResultList();
+            sessionFactory.close();
+
+            return currencyList;
+
+        } catch (Exception e) {
+            log.error(EXCEPTION, e.getMessage());
+        }
+        return Collections.emptyList();
+    }
+
+    // update
+    public boolean updateCurrency(Currency currency) {
+        try {
+            Session session = sessionFactory.openSession();
+            log.info("Hibernate update record of currency by currency{}", currency);
+
+            session.beginTransaction();
+            session.persist(currency);
+            session.getTransaction().commit();
+            session.close();
+
+            return true;
+        } catch (Exception e) {
+            log.error(EXCEPTION, e.getMessage());
+        }
+        return false;
+    }
+
+    // delete
+    public boolean deleteCurrency(Currency currency) {
+        try {
+            Session session = sessionFactory.openSession();
+            log.info("Hibernate delete record of currency by currency{}", currency);
+
+            session.beginTransaction();
+            session.persist(currency);
+            session.getTransaction().commit();
+            session.close();
+
+            return true;
+        } catch (Exception e) {
+            log.error(EXCEPTION, e.getMessage());
+        }
+        return false;
+    }
 }
 

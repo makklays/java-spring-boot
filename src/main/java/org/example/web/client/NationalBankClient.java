@@ -1,11 +1,9 @@
 package org.example.web.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.domain.CurrencyEntity;
+import org.example.domain.Currency;
 import org.example.repository.CurrencyRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -16,8 +14,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -32,13 +28,13 @@ public class NationalBankClient {
     }
 
 
-    public CurrencyEntity getCurrencyFromNationalBank(String code_currency) {
-        CurrencyEntity cur = new CurrencyEntity();
+    public Currency getCurrencyFromNationalBank(String code_currency, String by_date) {
+        Currency cur = new Currency();
         System.setProperty("http.agent", "Chrome"); // "User-Agent", "Mozilla/5.0"
         System.setProperty("content-type", "application/json");
         System.setProperty("Accept", "application/json");
         try {
-            URL url = new URL("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=20240119&json");
+            URL url = new URL("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date="+by_date+"&json");
             log.info("Protocol:{} Host Name:{} Port Number:{} File Name:{}", url.getProtocol(), url.getHost(), url.getPort(), url.getFile());
 
             String text = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))
