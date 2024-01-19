@@ -1,12 +1,22 @@
 package org.example.web.api;
 
-import org.example.config.HibernateSessionFactoryConfiguration;
-import org.example.domain.Currency;
+import static org.springframework.web.servlet.function.ServerResponse.ok;
+
+import org.example.domain.CurrencyEntity;
+import org.example.repository.CurrencyRepository;
+import org.example.services.CurrencyService;
+import org.example.web.client.NationalBankClient;
+import org.example.web.rest.Response;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -15,15 +25,150 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
 @RestController
-public class ApplicationExampleController {
+@RequestMapping("/api/v1/currencies")
+public class CurrencyController {
+    private final CurrencyService service;
+    private final CurrencyRepository repository;
+
+    private final SessionFactory sessionFactory;
+
+    private final NationalBankClient nationalBankClient;
+
+    private static final Logger log = LoggerFactory.getLogger(CurrencyController.class);
+
+    public CurrencyController(CurrencyRepository repository, CurrencyService service, SessionFactory sessionFactory, NationalBankClient nationalBankClient) {
+        this.repository = repository;
+        this.service = service;
+        this.sessionFactory = sessionFactory;
+        this.nationalBankClient = nationalBankClient;
+    }
+
+    // at browser: http://127.0.0.1:8080/api/v1/currencies
+
+    @GetMapping(path = "/{code_currency:[A-Z]+}", produces = "application/json")
+    public ResponseEntity<Response> getCurrency(@PathVariable String code_currency ) {
+         // get currency from National Bank and insert into table `currencies`
+        CurrencyEntity resBank = nationalBankClient.getCurrencyFromNationalBank(code_currency);
+        // get List of data by code_currency from database, use beans or services
+        //List<CurrencyEntity> result = repository.getCurrency(code_currency);
+
+        return ResponseEntity.ok().body(new Response("success", "200", resBank));
+    }
+
+//    @GetMapping(path = "/logs/{start_date}/{end_date}", produces = "application/json")
+//    @ResponseBody
+//    public List<CurrencyEntity> getCurrenciesLogsByPeriod(@PathVariable String start_date, @PathVariable String end_date) {
+//        // get data by code_currency from database, use beans or services
+//        List<CurrencyEntity> res = repository.getCurrencyByPeriod(start_date, end_date);
+//
+//        // log
+//        System.out.println("Start date: " + start_date + " End date:" + end_date);
+//        log.info("IIIIIIIIIIIIIIINFO!!! Start date: " + start_date + " End date:" + end_date + " Size: " + res.size());
+//
+//        return res;
+//    }
+
+    @PostMapping(consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String insertCurrency(@RequestBody CurrencyEntity currency) {
+
+        boolean res = repository.insertCurrency(currency);
+
+        JSONObject json = new JSONObject();
+        if (res) {
+            json.put("result", "success");
+            json.put("message", "All right!");
+        } else {
+            json.put("result", "error");
+            json.put("message", "All not right!");
+        }
+
+        return json.toString();
+    }
+
+//    @DeleteMapping(consumes = "application/json")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public String deleteCurrency(@RequestBody CurrencyEntity currency) {
+//
+//        boolean res = repository.deleteCurrency(currency);
+//
+//        JSONObject json = new JSONObject();
+//        if (res) {
+//            json.put("result", "success");
+//            json.put("message", "All right!");
+//        } else {
+//            json.put("result", "error");
+//            json.put("message", "All not right!");
+//        }
+//
+//        return json.toString();
+//    }
+
+//    @PutMapping(consumes = "application/json")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public String putCurrency(@RequestBody CurrencyEntity currency) {
+//
+//        boolean res = repository.updateCurrency(currency);
+//
+//        JSONObject json = new JSONObject();
+//        if (res) {
+//            json.put("result", "success");
+//            json.put("message", "All right!");
+//        } else {
+//            json.put("result", "error");
+//            json.put("message", "All not right!");
+//        }
+//
+//        return json.toString();
+//    }
+
+//    @PatchMapping(consumes = "application/json")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public String patchCurrency(@RequestBody CurrencyEntity currency) {
+//
+//        boolean res = repository.updateCurrency(currency);
+//
+//        JSONObject json = new JSONObject();
+//        if (res) {
+//            json.put("result", "success");
+//            json.put("message", "All right!");
+//        } else {
+//            json.put("result", "error");
+//            json.put("message", "All not right!");
+//        }
+//
+//        return json.toString();
+//    }
+
+    //--- END ------------------------
+
+    //--- Other URLs examples --------
+
     @RequestMapping("/")
     String home() {
         return "Hello World!";
+    }
+
+    // at browser: http://127.0.0.1:8080/api/v1/currencies/add
+    @RequestMapping("/api/v1/currencies")
+    @PostMapping(path = "/add", consumes = "application/json")
+    public void addCurrency(@RequestBody CurrencyEntity currency) {
+        // ...
+    }
+
+    // at browser: http://127.0.0.1:8080/api/v1/currencies/add
+    @GetMapping(path = "/api/v1/my-example-currencies/{id}", produces = "application/json")
+    @ResponseBody
+    public CurrencyEntity getCurr(@PathVariable String curr) {
+        // ...
+        return null;
     }
 
     @RequestMapping("/api/v1/get-weather")
@@ -32,9 +177,6 @@ public class ApplicationExampleController {
         // from file
         String JSON_FILE="./src/main/resources/my_weather.txt";
         InputStream fis = new FileInputStream(JSON_FILE);
-
-        // from url
-        // ?
 
         //create JsonReader object
         JsonReader jsonReader = Json.createReader(fis);
@@ -130,14 +272,14 @@ public class ApplicationExampleController {
 
             //--- Hibernate --------------
             System.out.println("Hibernate tutorial");
-            Session session = HibernateSessionFactoryConfiguration.getSessionFactory().openSession();
+            Session session = sessionFactory.openSession();//HibernateSessionFactoryConfiguration.getSessionFactory().openSession();
             session.beginTransaction();
             /*for (Object row : buf.lines().toArray()) {
                 //for (Object item : row) {
                 System.out.println( row.toString() );
             }*/
 
-            Currency currencyEntity = new Currency();
+            CurrencyEntity currencyEntity = new CurrencyEntity();
             currencyEntity.setR030("124");
             currencyEntity.setTxt("Канадський долар");
             currencyEntity.setRate("22.3224");
@@ -167,16 +309,16 @@ public class ApplicationExampleController {
                     System.out.println("txt :" + txt);
                     System.out.println("------------------");
 
-                    Currency cur = new Currency();
+                    CurrencyEntity cur = new CurrencyEntity();
                     cur.setR030(item.get("r030").toString());
                     cur.setTxt(item.get("txt").toString());
                     cur.setRate(item.get("rate").toString());
                     cur.setCc(item.get("cc").toString());
-                    LocalDate date1 = LocalDate.of(2024, 05, 02); // item.get("exchangedate").toString()
+                    LocalDate date1 = LocalDate.of(2024, 5, 2); // item.get("exchangedate").toString()
                     cur.setExchangedate(date1);
-                    //cur.setExchangedate((LocalDate) item.get("exchangedate"));
+                    cur.setIp("127.0.0.1");
 
-                    System.out.println( cur.toString() );
+                    System.out.println(cur.toString());
                     session.save(cur);
                 }
             }
@@ -196,7 +338,13 @@ public class ApplicationExampleController {
 
     @RequestMapping("/contacts")
     String contacts() {
-        return "TechMatrix18 \r\nSpain \r\nBarcelona ";
+
+        JSONObject json = new JSONObject();
+        json.put("company", "TechMatrix18");
+        json.put("country", "Spain");
+        json.put("city", "Barcelona");
+
+        return json.toString();
     }
 }
 

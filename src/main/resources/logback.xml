@@ -1,6 +1,8 @@
 <!--Examples https://www.baeldung.com/logback-->
 <!--Examples https://betterstack.com/community/guides/logging/java/logback/-->
-<configuration>
+<configuration scan="true">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
   <!-- for console -->
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
@@ -42,7 +44,7 @@
       <appender-ref ref="FILE_HIBERNATE" />
   </logger>
 
-  <root level="trace">
+  <root level="DEBUG">
     <appender-ref ref="STDOUT" />
     <appender-ref ref="FILE" />
   </root>
