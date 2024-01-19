@@ -1,6 +1,5 @@
 package org.example.web.api;
 
-import org.example.config.HibernateSessionFactoryConfiguration;
 import org.example.domain.CurrencyEntity;
 import org.example.repository.CurrencyRepository;
 import org.example.services.CurrencyService;
@@ -11,12 +10,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,13 +20,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
 @RestController
 @RequestMapping("/api/v1/currencies")
-public class ApplicationExampleController {
+public class CurrencyController {
     private final CurrencyService service;
     private final CurrencyRepository repository;
 
@@ -38,9 +36,9 @@ public class ApplicationExampleController {
 
     private final NationalBankClient nationalBankClient;
 
-    private static final Logger log = LoggerFactory.getLogger(ApplicationExampleController.class);
+    private static final Logger log = LoggerFactory.getLogger(CurrencyController.class);
 
-    public ApplicationExampleController(CurrencyRepository repository, CurrencyService service, SessionFactory sessionFactory, NationalBankClient nationalBankClient) {
+    public CurrencyController(CurrencyRepository repository, CurrencyService service, SessionFactory sessionFactory, NationalBankClient nationalBankClient) {
         this.repository = repository;
         this.service = service;
         this.sessionFactory = sessionFactory;
@@ -51,30 +49,14 @@ public class ApplicationExampleController {
 
     @GetMapping(path = "/{code_currency:[A-Z]+}", produces = "application/json")
     @ResponseBody
-    public CurrencyEntity getCurrency(@PathVariable String code_currency) {
-
-        // simple insert
-        /*CurrencyEntity curr = new CurrencyEntity();
-        curr.setTxt("Американский доллар");
-        curr.setR030("123");
-        curr.setCc("USD");
-        curr.setRate("12.12");
-        LocalDate date1 = LocalDate.of(2024, 1, 8);
-        curr.setExchangedate(date1);
-        curr.setIp("111.22.1");
-
-        log.info(curr.toString());
-
-        boolean resInsert = repository.insertCurrency(curr); */
-
-        // get currency from National Bank and insert into table `currencies`
+    public List<CurrencyEntity> getCurrency(@PathVariable String code_currency) {
+         // get currency from National Bank and insert into table `currencies`
         CurrencyEntity resBank = nationalBankClient.getCurrencyFromNationalBank(code_currency);
-
+        List<CurrencyEntity> currencyEntityList = new ArrayList<>();
+        currencyEntityList.add(resBank);
         // get List of data by code_currency from database, use beans or services
         //List<CurrencyEntity> result = repository.getCurrency(code_currency);
-
-
-        return resBank;
+        return currencyEntityList;
     }
 
 //    @GetMapping(path = "/logs/{start_date}/{end_date}", produces = "application/json")
