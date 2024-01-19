@@ -1,9 +1,12 @@
 package org.example.web.api;
 
+import static org.springframework.web.servlet.function.ServerResponse.ok;
+
 import org.example.domain.CurrencyEntity;
 import org.example.repository.CurrencyRepository;
 import org.example.services.CurrencyService;
 import org.example.web.client.NationalBankClient;
+import org.example.web.rest.Response;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.json.JSONArray;
@@ -11,6 +14,8 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
@@ -48,15 +53,13 @@ public class CurrencyController {
     // at browser: http://127.0.0.1:8080/api/v1/currencies
 
     @GetMapping(path = "/{code_currency:[A-Z]+}", produces = "application/json")
-    @ResponseBody
-    public List<CurrencyEntity> getCurrency(@PathVariable String code_currency) {
+    public ResponseEntity<Response> getCurrency(@PathVariable String code_currency ) {
          // get currency from National Bank and insert into table `currencies`
         CurrencyEntity resBank = nationalBankClient.getCurrencyFromNationalBank(code_currency);
-        List<CurrencyEntity> currencyEntityList = new ArrayList<>();
-        currencyEntityList.add(resBank);
         // get List of data by code_currency from database, use beans or services
         //List<CurrencyEntity> result = repository.getCurrency(code_currency);
-        return currencyEntityList;
+
+        return ResponseEntity.ok().body(new Response("success", "200", resBank));
     }
 
 //    @GetMapping(path = "/logs/{start_date}/{end_date}", produces = "application/json")
