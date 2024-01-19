@@ -79,14 +79,14 @@ public class Currency {
                     logger.info(cur.toString());
 
                     // insert
-                    CurrencyRepository curRepo = new CurrencyRepository();
-                    boolean res = curRepo.insertCurrency(cur);
-
-                    if (res) {
-                        logger.info("Inserted successfully record to `currencies`. Data: " + cur.toString());
-                    } else {
-                        logger.info("Not inserted record to `currencies`. Data: " + cur.toString());
-                    }
+//                    CurrencyRepository curRepo = new CurrencyRepository();
+//                    boolean res = curRepo.insertCurrency(cur);
+//
+//                    if (res) {
+//                        logger.info("Inserted successfully record to `currencies`. Data: " + cur.toString());
+//                    } else {
+//                        logger.info("Not inserted record to `currencies`. Data: " + cur.toString());
+//                    }
 
                     // array of objects for return
                     //List<CurrencyEntity> currEntity = ;

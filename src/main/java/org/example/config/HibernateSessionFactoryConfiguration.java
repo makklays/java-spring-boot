@@ -1,23 +1,34 @@
 package org.example.config;
 
+import com.zaxxer.hikari.HikariDataSource;
 import org.example.domain.Channel;
 import org.example.domain.Company;
 import org.example.domain.CurrencyEntity;
 import org.example.domain.User;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.cfg.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 
 import java.util.Properties;
 import java.util.TimeZone;
 
+@org.springframework.context.annotation.Configuration
 public class HibernateSessionFactoryConfiguration {
-    private static final SessionFactory sessionFactory = buildSessionFactory();
 
-    protected static SessionFactory buildSessionFactory() {
+    @Autowired
+    private HikariDataSource hikariDataSource;
+
+
+    private synchronized  SessionFactory buildSessionFactory() {
 
         // variant 1
         /*Configuration cfg = new Configuration();
@@ -31,18 +42,14 @@ public class HibernateSessionFactoryConfiguration {
         Configuration configuration = new Configuration();
         // Hibernate settings equivalent to hibernate.cfg.xml's properties
         Properties settings = new Properties();
-        settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver"); // com.mysql.jdbc.Driver
-        settings.put(Environment.URL, "jdbc:mysql://localhost:3306/javafx_aibot");
-        settings.put(Environment.USER, "admin");
-        settings.put(Environment.PASS, "admin");
+        settings.put(AvailableSettings.CONNECTION_PROVIDER, "com.zaxxer.hikari.hibernate.HikariConnectionProvider");
+        settings.put(AvailableSettings.DATASOURCE, hikariDataSource);
+        settings.put(AvailableSettings.SHOW_SQL, "true");
+        settings.put(AvailableSettings.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
 
-        settings.put(Environment.SHOW_SQL, "true");
-        settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
-
-        settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-        settings.put(Environment.GLOBALLY_QUOTED_IDENTIFIERS, "true");
-
-        //settings.put(Environment.HBM2DDL_AUTO, "create-drop");
+        //settings.put(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+        //settings.put(AvailableSettings.GLOBALLY_QUOTED_IDENTIFIERS, "true");
+        settings.put(AvailableSettings.HBM2DDL_AUTO, "update");
 
         settings.put(
             AvailableSettings.JDBC_TIME_ZONE,
@@ -60,18 +67,15 @@ public class HibernateSessionFactoryConfiguration {
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
 
-        SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-
-        return sessionFactory;
+        return configuration.buildSessionFactory(serviceRegistry);
     }
 
-    public static SessionFactory getSessionFactory() {
-        return sessionFactory;
+
+
+    @Bean
+    public SessionFactory getSession() {
+        return buildSessionFactory();
     }
 
-    public static void shutdown() {
-        // Close caches and connection pools
-        getSessionFactory().close();
-    }
 }
 

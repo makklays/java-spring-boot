@@ -1,6 +1,6 @@
 package org.example.domain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -16,7 +16,8 @@ import java.util.Objects;
 @Table(name = "`currencies`")
 public class CurrencyEntity {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private int id;
 
     @Column(name = "`r030`", nullable = true, insertable = true, updatable = true, length = 255)

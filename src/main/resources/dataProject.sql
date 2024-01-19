@@ -3,6 +3,11 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS credit_cards;
 DROP TABLE IF EXISTS channels;
 DROP TABLE IF EXISTS companies;
+DROP TABLE IF EXISTS sequenceGenerator;
+
+create table sequenceGenerator(
+  next_val INTEGER NOT null
+);
 
 CREATE TABLE `currencies` (
  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
