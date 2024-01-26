@@ -13,6 +13,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 
 import java.util.Properties;
 import java.util.TimeZone;
@@ -23,6 +25,8 @@ public class HibernateSessionFactoryConfiguration {
     @Autowired
     private HikariDataSource hikariDataSource;
 
+    @Autowired
+    Environment env;
 
     private synchronized  SessionFactory buildSessionFactory() {
 
@@ -41,8 +45,12 @@ public class HibernateSessionFactoryConfiguration {
         settings.put(AvailableSettings.CONNECTION_PROVIDER, "com.zaxxer.hikari.hibernate.HikariConnectionProvider");
         settings.put(AvailableSettings.DATASOURCE, hikariDataSource);
         settings.put(AvailableSettings.SHOW_SQL, "true");
-        settings.put(AvailableSettings.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
 
+        if(env.acceptsProfiles(Profiles.of("test"))){
+            settings.put(AvailableSettings.DIALECT, "org.hibernate.dialect.H2Dialect");
+        } else {
+            settings.put(AvailableSettings.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
+        }
         //settings.put(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "thread");
         //settings.put(AvailableSettings.GLOBALLY_QUOTED_IDENTIFIERS, "true");
         settings.put(AvailableSettings.HBM2DDL_AUTO, "update");

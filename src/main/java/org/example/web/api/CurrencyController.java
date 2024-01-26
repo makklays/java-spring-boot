@@ -31,6 +31,7 @@ import java.util.List;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.xml.bind.ValidationException;
 
 
 @RestController
@@ -55,7 +56,7 @@ public class CurrencyController {
     // at browser: http://127.0.0.1:8080/api/v1/currencies
 
     @GetMapping(path = "/{code_currency:[A-Z]+}", produces = "application/json")
-    public ResponseEntity<Response> getCurrency(@PathVariable String code_currency ) {
+    public ResponseEntity<Response> getCurrency(@PathVariable String code_currency ) throws ValidationException {
         // currently date
         Date by_date = new Date();
         SimpleDateFormat sdateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -75,33 +76,27 @@ public class CurrencyController {
         System.out.println("==== datetime ==> " + currentDateTime);
 
         // insert to table
-        boolean res = repository.insertCurrency(resBank);
-        if (res) {
-            log.info("Inserted successfully");
-        } else {
-            log.info("Not inserted successfully");
-        }
+        repository.insertCurrency(resBank);
 
         return ResponseEntity.ok().body(new Response("success", "200", resBank));
     }
 
-    @GetMapping(path = "/logs/{start_date}/{end_date}", produces = "application/json")
-    @ResponseBody
-    public List<Currency> getCurrenciesLogsByPeriod(@PathVariable String start_date, @PathVariable String end_date) {
+    @GetMapping(path = "/logs/{startDate}/{endDate}", produces = "application/json")
+    public List<Currency> getCurrenciesLogsByPeriod(@PathVariable String startDate, @PathVariable String endDate) {
         // get data by code_currency from database, use beans or services
-        List<Currency> res = repository.getCurrencyByPeriod(start_date, end_date);
+        List<Currency> res = repository.getCurrencyByPeriod(startDate, endDate);
 
         // log
-        log.info("IIIIIIIIIIIIIIINFO!!! Start date: " + start_date + " End date:" + end_date + " Size: " + res.size());
+        log.info("IIIIIIIIIIIIIIINFO!!! Start date: " + startDate + " End date:" + endDate + " Size: " + res.size());
 
         return res;
     }
 
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Response> insertCurrency(@RequestBody Currency currency) {
+    public ResponseEntity<Response> insertCurrency(@RequestBody Currency currency) throws ValidationException {
 
-        boolean res = repository.insertCurrency(currency);
+        repository.insertCurrency(currency);
 
         return ResponseEntity.ok().body(new Response("success", "200", currency));
     }
@@ -178,8 +173,7 @@ public class CurrencyController {
 
     // at browser: http://127.0.0.1:8080/api/v1/currencies/add
     @GetMapping(path = "/api/v1/my-example-currencies/{id}", produces = "application/json")
-    @ResponseBody
-    public Currency getCurr(@PathVariable String curr) {
+    public Currency getCurr(String id) {
         // ...
         return null;
     }
