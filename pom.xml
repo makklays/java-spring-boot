@@ -15,6 +15,7 @@
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>17</java.version>
+        <archunit-junit5.version>1.1.0</archunit-junit5.version>
     </properties>
     <dependencies>
         <!-- Spring -->
@@ -94,12 +95,6 @@
 
         <!-- for JPA, use hibernate-entitymanager instead of hibernate-core -->
 
-        <!-- optional -->
-<!--        <dependency>-->
-<!--            <groupId>org.hibernate.orm</groupId>-->
-<!--            <artifactId>hibernate-c3p0</artifactId>-->
-<!--            <version>6.2.13.Final</version>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>com.zaxxer</groupId>
@@ -127,13 +122,35 @@
         <!-- end json -->
 
         <!-- JUnit -->
-        <dependency>
+        <!--dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
-        </dependency>
+        </dependency-->
         <!-- end junit -->
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit-junit5-api</artifactId>
+            <version>${archunit-junit5.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <!-- Adding the engine dependency to the surefire-plugin unfortunately does not work in the current version. -->
+            <!-- https://www.archunit.org/userguide/html/000_Index.html#_junit_5 -->
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit-junit5-engine</artifactId>
+            <version>${archunit-junit5.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

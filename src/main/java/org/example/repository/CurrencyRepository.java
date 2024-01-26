@@ -7,8 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.io.InvalidObjectException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import javax.xml.bind.ValidationException;
 
 /**
  * Class: CurrencyRepository
@@ -27,7 +30,7 @@ public class CurrencyRepository {
 
 
     // insert - yo te quiero MyGirl :-)
-    public boolean insertCurrency(Currency currency) {
+    public void insertCurrency(Currency currency)throws ValidationException {
 
         try {
             Session session = sessionFactory.openSession();
@@ -35,12 +38,27 @@ public class CurrencyRepository {
             session.beginTransaction();
             session.persist(currency);
             session.getTransaction().commit();
-            session.close();
-            return true;
+            log.info("Inserted successfully");
+        } catch (Exception e) {
+            log.error(EXCEPTION, e.getMessage());
+            log.info("Not inserted successfully");
+            throw new ValidationException(e.getMessage());
+        }
+    }
+
+    public List<Currency> getAllCurrencies() {
+        try {
+            Session session = sessionFactory.openSession();
+            log.info("Hibernate get all records of currency");
+
+            return session
+                    .createQuery("FROM Currency", Currency.class)
+                    .getResultList();
+
         } catch (Exception e) {
             log.error(EXCEPTION, e.getMessage());
         }
-        return false;
+        return Collections.emptyList();
     }
 
     // get data by currency code
@@ -49,12 +67,9 @@ public class CurrencyRepository {
             Session session = sessionFactory.openSession();
            log.info("Hibernate get records of currency by currency_code{}", currencyCode);
 
-            List<Currency> currencyList = session
+            return session
                     .createQuery("FROM Currency WHERE cc = '" + currencyCode + "' ", Currency.class)
                     .getResultList();
-            sessionFactory.close();
-
-            return currencyList;
 
         } catch (Exception e) {
             log.error(EXCEPTION, e.getMessage());
@@ -74,7 +89,6 @@ public class CurrencyRepository {
             List<Currency> currencyList = session
                     .createQuery("FROM Currency  WHERE created_at BETWEEN '" + date_from + "' AND '" + date_to + "'  ORDER BY created_at DESC", Currency.class)
                     .getResultList();
-            sessionFactory.close();
 
             return currencyList;
 
@@ -93,7 +107,6 @@ public class CurrencyRepository {
             session.beginTransaction();
             session.persist(currency);
             session.getTransaction().commit();
-            session.close();
 
             return true;
         } catch (Exception e) {
@@ -111,13 +124,26 @@ public class CurrencyRepository {
             session.beginTransaction();
             session.persist(currency);
             session.getTransaction().commit();
-            session.close();
 
             return true;
         } catch (Exception e) {
             log.error(EXCEPTION, e.getMessage());
         }
         return false;
+    }
+
+    public void deleteAllCurrencies() {
+        try {
+            Session session = sessionFactory.openSession();
+            log.info("Hibernate delete all records of currency");
+
+            session.beginTransaction();
+            session.createQuery("DELETE FROM Currency").executeUpdate();
+            session.getTransaction().commit();
+
+        } catch (Exception e) {
+            log.error(EXCEPTION, e.getMessage());
+        }
     }
 }
 

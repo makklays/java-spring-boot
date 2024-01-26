@@ -1,29 +1,24 @@
-package org.example.config;
+package org.example.configuration;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@Configuration
-@Profile("!test")
+@TestConfiguration
 public class DataSourceConfiguration {
     private static final HikariConfig config = new HikariConfig();
     private static final HikariDataSource ds;
 
     static {
-        config.setJdbcUrl( "jdbc:mysql://localhost:3306/currency_rest" );
-        config.setDriverClassName( "com.mysql.jdbc.Driver");
+        config.setJdbcUrl( "jdbc:h2:mem:test" );
+        config.setDriverClassName( "org.h2.Driver");
         config.setUsername( "admin" ); // "root"
         config.setPassword( "admin" ); // "root"
-        config.addDataSourceProperty( "cachePrepStmts" , "true" );
-        config.addDataSourceProperty( "prepStmtCacheSize" , "250" );
-        config.addDataSourceProperty( "prepStmtCacheSqlLimit" , "2048" );
         ds = new HikariDataSource( config );
     }
 
