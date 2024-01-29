@@ -55,6 +55,11 @@ public class CurrencyController {
 
     // at browser: http://127.0.0.1:8080/api/v1/currencies
 
+    @GetMapping(path = "/")
+    public String firstPage() throws ValidationException {
+        return "Hola, Mundo!";
+    }
+
     @GetMapping(path = "/{code_currency:[A-Z]+}", produces = "application/json")
     public ResponseEntity<Response> getCurrency(@PathVariable String code_currency ) throws ValidationException {
         // currently date
